@@ -12,27 +12,32 @@
           <button @tap="tap()" @options="{event: 'haha'}">
             tap
           </button>
-          <button @press="press">
+          <button @press="press" @options="{{pressOptions}}">
             press
           </button>
         </div>
 
     </script>
-    <script src="https://unpkg.com/yox@0.0.8"></script>
+    <script src="http://localhost:9191/dist/yox.min.js"></script>
     <script src="../dist/yox-touch.js"></script>
     <script>
         Yox.use(YoxTouch)
         var instance = new Yox({
           el: '#app',
+          data: {
+            pressOptions: {
+              event: 'xxx'
+            }
+          },
           template: '#template',
           events: {
             press: function () {
-              console.log('press', arguments)
+              console.log('press', this, arguments)
             }
           },
           methods: {
             tap: function () {
-              console.log('tap', arguments)
+              console.log('tap', this, arguments)
             }
           }
         })

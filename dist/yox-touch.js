@@ -68,11 +68,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 	function capitalize(str) {
-	  return str.charAt(0).toUpperCase() + str.slice(1);
+	  return str.charAt(0).toUpperCase() + str.substr(1);
 	}
 
 	var Event = void 0;
-	var gestures = ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe'];
 
 	var directive = {
 	  attach: function attach(_ref) {
@@ -81,18 +80,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        node = _ref.node,
 	        instance = _ref.instance,
 	        directives = _ref.directives;
+	    var $hammer = el.$hammer;
 
-	    if (!el.$hammer) {
-	      el.$hammer = new _hammerjs2["default"].Manager(el);
+	    if (!$hammer) {
+	      $hammer = el.$hammer = new _hammerjs2["default"].Manager(el);
 	    }
 
+	    // 读取配置项
 	    var options = directives.options;
 
 	    if (options) {
-	      options = new Function('return ' + options.node.getValue())();
+	      options = options.node.getValue();
+	      options = typeof options === 'string' ? new Function('return ' + options)() : options;
 	    }
-	    var $hammer = el.$hammer;
-
 	    $hammer.add(new _hammerjs2["default"][capitalize(name)](options));
 
 	    if (options && options.event) {
@@ -111,10 +111,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	function install(Yox) {
-	  Event = Yox.Event;
-	  gestures.forEach(function (gesture) {
-	    Yox.directive(gesture, directive);
+	  ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe'].forEach(function (name) {
+	    Yox.directive(name, directive);
 	  });
+	  Event = Yox.Event;
 	}
 
 /***/ },

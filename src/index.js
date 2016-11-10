@@ -2,23 +2,27 @@
 import Hammer from 'hammerjs'
 
 function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
+  return str.charAt(0).toUpperCase() + str.substr(1)
 }
 
 let Event
-const gestures = [ 'tap', 'pan', 'pinch', 'press', 'rotate', 'swipe' ]
 
 const directive = {
   attach: function ({ el, name, node, instance, directives }) {
-    if (!el.$hammer) {
-      el.$hammer = new Hammer.Manager(el)
+
+    let { $hammer } = el
+    if (!$hammer) {
+      $hammer = el.$hammer = new Hammer.Manager(el)
     }
 
+    // 读取配置项
     let { options } = directives
     if (options) {
-      options = (new Function(`return ${options.node.getValue()}`))()
+      options = options.node.getValue()
+      options = typeof options === 'string'
+        ? (new Function(`return ${options}`))()
+        : options
     }
-    let { $hammer } = el
     $hammer.add(new Hammer[capitalize(name)](options))
 
     if (options && options.event) {
@@ -40,8 +44,10 @@ const directive = {
 }
 
 export function install(Yox) {
+  [ 'tap', 'pan', 'pinch', 'press', 'rotate', 'swipe' ].forEach(
+    function (name) {
+      Yox.directive(name, directive)
+    }
+  )
   Event = Yox.Event
-  gestures.forEach(function (gesture) {
-    Yox.directive(gesture, directive)
-  })
 }
