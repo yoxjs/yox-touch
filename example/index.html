@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>touch</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script id="template" type="plain/text">
+
+        <div>
+          <button @tap="tap()" @options="{event: 'haha'}">
+            tap
+          </button>
+          <button @press="press">
+            press
+          </button>
+        </div>
+
+    </script>
+    <script src="https://unpkg.com/yox@0.0.8"></script>
+    <script src="../dist/yox-touch.js"></script>
+    <script>
+        Yox.use(YoxTouch)
+        var instance = new Yox({
+          el: '#app',
+          template: '#template',
+          events: {
+            press: function () {
+              console.log('press', arguments)
+            }
+          },
+          methods: {
+            tap: function () {
+              console.log('tap', arguments)
+            }
+          }
+        })
+
+    </script>
+</body>
+</html>
