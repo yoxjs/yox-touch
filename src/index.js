@@ -5,7 +5,7 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-let Event
+let utils
 
 const directive = {
   attach: function ({ el, name, node, instance, directives }) {
@@ -19,7 +19,7 @@ const directive = {
     let { options } = directives
     if (options) {
       options = options.node.getValue()
-      options = typeof options === 'string'
+      options = utils.is.string(options)
         ? (new Function(`return ${options}`))()
         : options
     }
@@ -33,7 +33,7 @@ const directive = {
     $hammer.on(
       name,
       function (event) {
-        return listener.call(this, new Event(event))
+        return listener.call(this, new utils.Event(event))
       }
     )
   },
@@ -49,5 +49,5 @@ export function install(Yox) {
       Yox.directive(name, directive)
     }
   )
-  Event = Yox.Event
+  utils = Yox.utils
 }
