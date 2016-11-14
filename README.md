@@ -35,7 +35,7 @@ Yox.use(YoxTouch)
 </button>
 ```
 
-高级用法（配置项请参考 hammerjs 文档）
+高级用法
 
 ```html
 <button @tap="tap()" @options="{event: 'tap'}">
@@ -45,3 +45,5 @@ Yox.use(YoxTouch)
   Press
 </button>
 ```
+
+`options` 指令使用的配置项请参考 [hammerjs 文档](http://hammerjs.github.io/)，涉及的常量可用 `YoxTouch.constant.[ hammer 常量名 ]`。

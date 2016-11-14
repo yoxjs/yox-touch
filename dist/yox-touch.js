@@ -2068,13 +2068,21 @@ var directive = {
   }
 };
 
+var constant = {};
+
 function install(Yox) {
-  ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe'].forEach(function (name) {
+  utils = Yox.utils;
+  utils.array.each(['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe'], function (name) {
     Yox.directive(name, directive);
   });
-  utils = Yox.utils;
+  utils.object.each(Hammer, function (value, key) {
+    if (key.indexOf('_') > 0) {
+      constant[key] = value;
+    }
+  });
 }
 
+exports.constant = constant;
 exports.install = install;
 
 Object.defineProperty(exports, '__esModule', { value: true });

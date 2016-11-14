@@ -43,11 +43,23 @@ const directive = {
   }
 }
 
+// 把 hammer 的常量暴露出去给外部用
+export let constant = { }
+
 export function install(Yox) {
-  [ 'tap', 'pan', 'pinch', 'press', 'rotate', 'swipe' ].forEach(
+  utils = Yox.utils
+  utils.array.each(
+    [ 'tap', 'pan', 'pinch', 'press', 'rotate', 'swipe' ],
     function (name) {
       Yox.directive(name, directive)
     }
   )
-  utils = Yox.utils
+  utils.object.each(
+    Hammer,
+    function (value, key) {
+      if (key.indexOf('_') > 0) {
+        constant[key] = value
+      }
+    }
+  )
 }

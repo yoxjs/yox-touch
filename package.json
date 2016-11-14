@@ -1,6 +1,6 @@
 {
   "name": "yox-touch",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "yox-touch",
   "main": "dist/yox-touch.min.js",
   "scripts": {
@@ -24,7 +24,6 @@
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-commonjs": "^5.0.5",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-plugin-uglify": "^1.0.1",
-    "hammerjs": "^2.0.8"
+    "rollup-plugin-uglify": "^1.0.1"
   }
 }
