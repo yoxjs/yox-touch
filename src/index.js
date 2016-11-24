@@ -43,7 +43,8 @@ const directive = {
   }
 }
 
-// 把 hammer 的常量暴露出去给外部用
+export const version = '0.0.7'
+
 export let constant = { }
 
 export function install(Yox) {
@@ -62,4 +63,9 @@ export function install(Yox) {
       }
     }
   )
+}
+
+// 如果全局环境已有 Yox，自动安装
+if (typeof Yox !== 'undefined' && Yox.use) {
+  Yox.use(Router)
 }
