@@ -1,11 +1,20 @@
 # yox-touch
 
+`yox-touch` 基于指令封装了 [hammerjs](http://hammerjs.github.io/)，理论上拥有 `hammerjs` 所有的功能。
+
 ## Install
 
 NPM
 
 ```shell
+npm install yox
 npm install yox-touch
+```
+
+```javascript
+import Yox from 'yox'
+import YoxTouch from 'yox-touch'
+Yox.use(YoxTouch)
 ```
 
 CDN
@@ -17,16 +26,27 @@ CDN
 
 ## Usage
 
-`yox-touch` 基于指令封装了 [hammerjs](http://hammerjs.github.io/)，理论上拥有 `hammerjs` 所有的功能。
 
+```javascript
+{
+    methods: {
+        tap: function () {
+
+        },
+        press: function () {
+
+        }
+    }
+}
+```
 
 简单用法
 
 ```html
-<button @tap="tap()">
+<button o-tap="tap()">
   Tap
 </button>
-<button @tap="press()">
+<button o-tap="press()">
   Press
 </button>
 ```
@@ -34,10 +54,10 @@ CDN
 高级用法
 
 ```html
-<button @tap="tap()" @options="{event: 'tap'}">
+<button o-tap="tap()" o-options="{event: 'tap'}">
   Tap
 </button>
-<button @tap="press()" @options="{event: 'press'}">
+<button o-tap="press()" o-options="{event: 'press'}">
   Press
 </button>
 ```

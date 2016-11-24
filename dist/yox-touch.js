@@ -1957,7 +1957,7 @@ var directive = {
   }
 };
 
-var version = '0.0.7';
+var version = '0.0.8';
 
 var constant = {};
 
@@ -1974,7 +1974,7 @@ function install(Yox) {
 }
 
 if (typeof Yox !== 'undefined' && Yox.use) {
-  Yox.use(Router);
+  install(Yox);
 }
 
 exports.version = version;
