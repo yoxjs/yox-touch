@@ -1,11 +1,17 @@
 
-import Hammer from './hammer'
+let Hammer = typeof require === 'function'
+    ? require('hammerjs')
+    : window.Hammer
+
+if (!Hammer) {
+  throw new Error('[yox-touch] cannot locate Hammer.js.')
+}
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-let utils
+let is, object, Event
 
 const directive = {
   attach: function ({ el, name, node, instance, directives }) {
@@ -15,25 +21,33 @@ const directive = {
       $hammer = el.$hammer = new Hammer.Manager(el)
     }
 
-    // 读取配置项
-    let { options } = directives
-    if (options) {
-      options = options.node.getValue()
-      options = utils.is.string(options)
-        ? (new Function(`return ${options}`))()
-        : options
-    }
-    $hammer.add(new Hammer[capitalize(name)](options))
+    // 全局配置
+    let globalOptions = options[name]
 
-    if (options && options.event) {
-      name = options.event
+    // 本地配置
+    let localOptions = directives.options
+    if (localOptions) {
+      localOptions = localOptions.node.getValue()
+      localOptions = is.string(localOptions)
+        ? (new Function(`return ${localOptions}`))()
+        : localOptions
+    }
+
+    let finalOptions = object.extend({ }, globalOptions, localOptions)
+
+    $hammer.add(
+      new Hammer[capitalize(name)](finalOptions)
+    )
+
+    if (finalOptions.event) {
+      name = finalOptions.event
     }
 
     let listener = instance.compileAttr(node.keypath, node.getValue())
     $hammer.on(
       name,
       function (event) {
-        return listener.call(this, new utils.Event(event))
+        return listener.call(this, new Event(event))
       }
     )
   },
@@ -43,26 +57,34 @@ const directive = {
   }
 }
 
-export const version = '0.0.8'
+/**
+ * 版本
+ *
+ * @type {Object}
+ */
+export const version = '0.0.9'
 
-export let constant = { }
+/**
+ * 全局默认配置，可用 o-options="{}" 进行覆盖
+ *
+ * @type {Object}
+ */
+export let options = { }
 
 export function install(Yox) {
-  utils = Yox.utils
+
+  let { utils } = Yox
+  is = utils.is
+  object = utils.object
+  Event = utils.Event
+
   utils.array.each(
     [ 'tap', 'pan', 'pinch', 'press', 'rotate', 'swipe' ],
     function (name) {
       Yox.directive(name, directive)
     }
   )
-  utils.object.each(
-    Hammer,
-    function (value, key) {
-      if (key.indexOf('_') > 0) {
-        constant[key] = value
-      }
-    }
-  )
+
 }
 
 // 如果全局环境已有 Yox，自动安装

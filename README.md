@@ -20,6 +20,7 @@ Yox.use(YoxTouch)
 CDN
 
 ```html
+<script src="https://cdn.staticfile.org/hammer.js/2.0.8/hammer.min.js"></script>
 <script src="https://unpkg.com/yox@latest"></script>
 <script src="https://unpkg.com/yox-touch@latest"></script>
 ```
@@ -62,4 +63,4 @@ CDN
 </button>
 ```
 
-`options` 指令使用的配置项请参考 [hammerjs 文档](http://hammerjs.github.io/)，涉及的常量可用 `YoxTouch.constant.[ hammer 常量名 ]`。
+`options` 指令使用的配置项请参考 [hammerjs 文档](http://hammerjs.github.io/)
