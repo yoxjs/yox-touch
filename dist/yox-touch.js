@@ -19,7 +19,7 @@ var object = void 0;
 var Event = void 0;
 
 var directive = {
-  attach: function attach(_ref) {
+  onattach: function onattach(_ref) {
     var el = _ref.el,
         name = _ref.name,
         node = _ref.node,
@@ -52,13 +52,13 @@ var directive = {
       return listener.call(this, new Event(event));
     });
   },
-  detach: function detach(name, el) {
+  ondetach: function ondetach(name, el) {
     el.$hammer.destroy();
     el.$hammer = null;
   }
 };
 
-var version = '0.0.9';
+var version = '0.0.10';
 
 var options = {};
 

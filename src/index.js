@@ -14,7 +14,7 @@ function capitalize(str) {
 let is, object, Event
 
 const directive = {
-  attach: function ({ el, name, node, instance, directives }) {
+  onattach: function ({ el, name, node, instance, directives }) {
 
     let { $hammer } = el
     if (!$hammer) {
@@ -51,7 +51,7 @@ const directive = {
       }
     )
   },
-  detach: function (name, el) {
+  ondetach: function (name, el) {
     el.$hammer.destroy()
     el.$hammer = null
   }
@@ -62,7 +62,7 @@ const directive = {
  *
  * @type {Object}
  */
-export const version = '0.0.9'
+export const version = '0.0.10'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖
