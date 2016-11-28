@@ -9,6 +9,7 @@ NPM
 ```shell
 npm install yox
 npm install yox-touch
+npm install hammerjs
 ```
 
 ```javascript
@@ -20,7 +21,7 @@ Yox.use(YoxTouch)
 CDN
 
 ```html
-<script src="https://cdn.staticfile.org/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="https://unpkg.com/hammerjs@latest"></script>
 <script src="https://unpkg.com/yox@latest"></script>
 <script src="https://unpkg.com/yox-touch@latest"></script>
 ```
@@ -45,10 +46,10 @@ CDN
 
 ```html
 <button o-tap="tap()">
-  Tap
+    Tap
 </button>
 <button o-tap="press()">
-  Press
+    Press
 </button>
 ```
 
@@ -56,10 +57,10 @@ CDN
 
 ```html
 <button o-tap="tap()" o-options="{event: 'tap'}">
-  Tap
+    Tap
 </button>
 <button o-tap="press()" o-options="{event: 'press'}">
-  Press
+    Press
 </button>
 ```
 

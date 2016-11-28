@@ -1,8 +1,14 @@
 {
   "name": "yox-touch",
-  "version": "0.0.10",
-  "description": "yox-touch",
+  "version": "0.0.11",
+  "description": "Hammer.js wrapper for yox.js",
   "main": "dist/yox-touch.min.js",
+  "keywords": [
+    "lightweight",
+    "touch",
+    "hammer",
+    "mvvm"
+  ],
   "scripts": {
     "source": "rollup -c",
     "release": "NODE_ENV=release rollup -c"
