@@ -7,11 +7,7 @@ if (!Hammer) {
   throw new Error('[yox-touch] cannot locate Hammer.js.')
 }
 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-let is, object, Event
+let is, string, object, Event
 
 const directive = {
   attach: function ({ el, name, node, instance, directives }) {
@@ -36,7 +32,7 @@ const directive = {
     let finalOptions = object.extend({ }, globalOptions, localOptions)
 
     $hammer.add(
-      new Hammer[capitalize(name)](finalOptions)
+      new Hammer[string.capitalize(name)](finalOptions)
     )
 
     if (finalOptions.event) {
@@ -62,7 +58,7 @@ const directive = {
  *
  * @type {Object}
  */
-export const version = '0.1.1'
+export const version = '0.1.2'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖
@@ -75,6 +71,7 @@ export function install(Yox) {
 
   let { utils } = Yox
   is = utils.is
+  string = utils.string
   object = utils.object
   Event = utils.Event
 

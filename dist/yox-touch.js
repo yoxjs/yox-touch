@@ -10,11 +10,8 @@ if (!Hammer) {
   throw new Error('[yox-touch] cannot locate Hammer.js.');
 }
 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
 var is = void 0;
+var string = void 0;
 var object = void 0;
 var Event = void 0;
 
@@ -41,7 +38,7 @@ var directive = {
 
     var finalOptions = object.extend({}, globalOptions, localOptions);
 
-    $hammer.add(new Hammer[capitalize(name)](finalOptions));
+    $hammer.add(new Hammer[string.capitalize(name)](finalOptions));
 
     if (finalOptions.event) {
       name = finalOptions.event;
@@ -58,7 +55,7 @@ var directive = {
   }
 };
 
-var version = '0.1.1';
+var version = '0.1.2';
 
 var options = {};
 
@@ -66,6 +63,7 @@ function install(Yox) {
   var utils = Yox.utils;
 
   is = utils.is;
+  string = utils.string;
   object = utils.object;
   Event = utils.Event;
 
