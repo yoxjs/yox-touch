@@ -23,7 +23,7 @@ const directive = {
     // 本地配置
     let localOptions = directives.options
     if (localOptions) {
-      localOptions = localOptions.node.getValue()
+      localOptions = localOptions.node.value
       localOptions = is.string(localOptions)
         ? (new Function(`return ${localOptions}`))()
         : localOptions
@@ -39,7 +39,7 @@ const directive = {
       name = finalOptions.event
     }
 
-    let listener = instance.compileValue(node.keypath, node.getValue())
+    let listener = instance.compileValue(node.keypath, node.value)
     $hammer.on(
       name,
       function (event) {
@@ -58,7 +58,7 @@ const directive = {
  *
  * @type {Object}
  */
-export const version = '0.1.2'
+export const version = '0.2.0'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖

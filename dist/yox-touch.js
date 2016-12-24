@@ -32,7 +32,7 @@ var directive = {
 
     var localOptions = directives.options;
     if (localOptions) {
-      localOptions = localOptions.node.getValue();
+      localOptions = localOptions.node.value;
       localOptions = is.string(localOptions) ? new Function('return ' + localOptions)() : localOptions;
     }
 
@@ -44,7 +44,7 @@ var directive = {
       name = finalOptions.event;
     }
 
-    var listener = instance.compileValue(node.keypath, node.getValue());
+    var listener = instance.compileValue(node.keypath, node.value);
     $hammer.on(name, function (event) {
       return listener(new Event(event));
     });
@@ -55,7 +55,7 @@ var directive = {
   }
 };
 
-var version = '0.1.2';
+var version = '0.2.0';
 
 var options = {};
 
