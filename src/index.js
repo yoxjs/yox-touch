@@ -10,7 +10,7 @@ if (!Hammer) {
 let is, string, object, Event
 
 const directive = {
-  attach: function ({ el, name, node, instance, directives }) {
+  attach: function ({ el, node, instance, directives }) {
 
     let { $hammer } = el
     if (!$hammer) {
@@ -18,6 +18,7 @@ const directive = {
     }
 
     // 全局配置
+    let { name } = node
     let globalOptions = options[name]
 
     // 本地配置
@@ -47,7 +48,7 @@ const directive = {
       }
     )
   },
-  detach: function (name, el) {
+  detach: function ({ el }) {
     el.$hammer.destroy()
     el.$hammer = null
   }
@@ -58,7 +59,7 @@ const directive = {
  *
  * @type {Object}
  */
-export const version = '0.2.0'
+export const version = '0.2.1'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖

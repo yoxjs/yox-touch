@@ -18,7 +18,6 @@ var Event = void 0;
 var directive = {
   attach: function attach(_ref) {
     var el = _ref.el,
-        name = _ref.name,
         node = _ref.node,
         instance = _ref.instance,
         directives = _ref.directives;
@@ -27,6 +26,8 @@ var directive = {
     if (!$hammer) {
       $hammer = el.$hammer = new Hammer.Manager(el);
     }
+
+    var name = node.name;
 
     var globalOptions = options[name];
 
@@ -49,13 +50,15 @@ var directive = {
       return listener(new Event(event));
     });
   },
-  detach: function detach(name, el) {
+  detach: function detach(_ref2) {
+    var el = _ref2.el;
+
     el.$hammer.destroy();
     el.$hammer = null;
   }
 };
 
-var version = '0.2.0';
+var version = '0.2.1';
 
 var options = {};
 
