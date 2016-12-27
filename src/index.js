@@ -10,7 +10,7 @@ if (!Hammer) {
 let is, string, object, Event
 
 const directive = {
-  attach: function ({ el, node, instance, directives }) {
+  attach({ el, node, instance, directives }) {
 
     let { $hammer } = el
     if (!$hammer) {
@@ -48,7 +48,7 @@ const directive = {
       }
     )
   },
-  detach: function ({ el }) {
+  detach({ el }) {
     el.$hammer.destroy()
     el.$hammer = null
   }
@@ -59,7 +59,7 @@ const directive = {
  *
  * @type {Object}
  */
-export const version = '0.2.1'
+export const version = '0.2.2'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖
