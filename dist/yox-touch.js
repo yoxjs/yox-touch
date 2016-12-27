@@ -50,6 +50,10 @@ var directive = {
       return listener(new Event(event));
     });
   },
+  update: function update(options) {
+    this.detach(options);
+    this.attach(options);
+  },
   detach: function detach(_ref2) {
     var el = _ref2.el;
 
@@ -58,7 +62,7 @@ var directive = {
   }
 };
 
-var version = '0.2.2';
+var version = '0.3.0';
 
 var options = {};
 

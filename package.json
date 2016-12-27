@@ -1,6 +1,6 @@
 {
   "name": "yox-touch",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Hammer.js wrapper for yox.js",
   "main": "dist/yox-touch.min.js",
   "keywords": [

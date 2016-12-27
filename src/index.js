@@ -48,6 +48,10 @@ const directive = {
       }
     )
   },
+  update(options) {
+    this.detach(options)
+    this.attach(options)
+  },
   detach({ el }) {
     el.$hammer.destroy()
     el.$hammer = null
@@ -59,7 +63,7 @@ const directive = {
  *
  * @type {Object}
  */
-export const version = '0.2.2'
+export const version = '0.3.0'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖
