@@ -24,7 +24,7 @@ const directive = {
     // 本地配置
     let localOptions = directives.options
     if (localOptions) {
-      localOptions = localOptions.node.value
+      localOptions = localOptions.value
       localOptions = is.string(localOptions)
         ? (new Function(`return ${localOptions}`))()
         : localOptions
@@ -47,15 +47,12 @@ const directive = {
         return listener(new Event(event))
       }
     )
+
+    return function () {
+      el.$hammer.destroy()
+      el.$hammer = null
+    }
   },
-  update(options) {
-    this.detach(options)
-    this.attach(options)
-  },
-  detach({ el }) {
-    el.$hammer.destroy()
-    el.$hammer = null
-  }
 }
 
 /**
@@ -63,7 +60,7 @@ const directive = {
  *
  * @type {Object}
  */
-export const version = '0.3.0'
+export const version = '0.3.1'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖

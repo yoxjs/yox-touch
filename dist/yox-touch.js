@@ -33,7 +33,7 @@ var directive = {
 
     var localOptions = directives.options;
     if (localOptions) {
-      localOptions = localOptions.node.value;
+      localOptions = localOptions.value;
       localOptions = is.string(localOptions) ? new Function('return ' + localOptions)() : localOptions;
     }
 
@@ -49,20 +49,15 @@ var directive = {
     $hammer.on(name, function (event) {
       return listener(new Event(event));
     });
-  },
-  update: function update(options) {
-    this.detach(options);
-    this.attach(options);
-  },
-  detach: function detach(_ref2) {
-    var el = _ref2.el;
 
-    el.$hammer.destroy();
-    el.$hammer = null;
+    return function () {
+      el.$hammer.destroy();
+      el.$hammer = null;
+    };
   }
 };
 
-var version = '0.3.0';
+var version = '0.3.1';
 
 var options = {};
 
