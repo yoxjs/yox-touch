@@ -9,50 +9,48 @@ if (!Hammer) {
 
 let is, string, object, Event
 
-const directive = {
-  attach({ el, node, instance, directives }) {
+function directive({ el, node, instance, directives }) {
 
-    let { $hammer } = el
-    if (!$hammer) {
-      $hammer = el.$hammer = new Hammer.Manager(el)
+  let { $hammer } = el
+  if (!$hammer) {
+    $hammer = el.$hammer = new Hammer.Manager(el)
+  }
+
+  // 全局配置
+  let { name } = node
+  let globalOptions = options[name]
+
+  // 本地配置
+  let localOptions = directives.options
+  if (localOptions) {
+    localOptions = localOptions.value
+    localOptions = is.string(localOptions)
+      ? (new Function(`return ${localOptions}`))()
+      : localOptions
+  }
+
+  let finalOptions = object.extend({ }, globalOptions, localOptions)
+
+  $hammer.add(
+    new Hammer[string.capitalize(name)](finalOptions)
+  )
+
+  if (finalOptions.event) {
+    name = finalOptions.event
+  }
+
+  let listener = instance.compileValue(node.keypath, node.value)
+  $hammer.on(
+    name,
+    function (event) {
+      return listener(new Event(event))
     }
+  )
 
-    // 全局配置
-    let { name } = node
-    let globalOptions = options[name]
-
-    // 本地配置
-    let localOptions = directives.options
-    if (localOptions) {
-      localOptions = localOptions.value
-      localOptions = is.string(localOptions)
-        ? (new Function(`return ${localOptions}`))()
-        : localOptions
-    }
-
-    let finalOptions = object.extend({ }, globalOptions, localOptions)
-
-    $hammer.add(
-      new Hammer[string.capitalize(name)](finalOptions)
-    )
-
-    if (finalOptions.event) {
-      name = finalOptions.event
-    }
-
-    let listener = instance.compileValue(node.keypath, node.value)
-    $hammer.on(
-      name,
-      function (event) {
-        return listener(new Event(event))
-      }
-    )
-
-    return function () {
-      el.$hammer.destroy()
-      el.$hammer = null
-    }
-  },
+  return function () {
+    el.$hammer.destroy()
+    el.$hammer = null
+  }
 }
 
 /**
@@ -60,7 +58,7 @@ const directive = {
  *
  * @type {Object}
  */
-export const version = '0.3.1'
+export const version = '0.4.0'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖

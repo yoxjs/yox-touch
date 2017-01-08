@@ -15,49 +15,47 @@ var string = void 0;
 var object = void 0;
 var Event = void 0;
 
-var directive = {
-  attach: function attach(_ref) {
-    var el = _ref.el,
-        node = _ref.node,
-        instance = _ref.instance,
-        directives = _ref.directives;
-    var $hammer = el.$hammer;
+function directive(_ref) {
+  var el = _ref.el,
+      node = _ref.node,
+      instance = _ref.instance,
+      directives = _ref.directives;
+  var $hammer = el.$hammer;
 
-    if (!$hammer) {
-      $hammer = el.$hammer = new Hammer.Manager(el);
-    }
-
-    var name = node.name;
-
-    var globalOptions = options[name];
-
-    var localOptions = directives.options;
-    if (localOptions) {
-      localOptions = localOptions.value;
-      localOptions = is.string(localOptions) ? new Function('return ' + localOptions)() : localOptions;
-    }
-
-    var finalOptions = object.extend({}, globalOptions, localOptions);
-
-    $hammer.add(new Hammer[string.capitalize(name)](finalOptions));
-
-    if (finalOptions.event) {
-      name = finalOptions.event;
-    }
-
-    var listener = instance.compileValue(node.keypath, node.value);
-    $hammer.on(name, function (event) {
-      return listener(new Event(event));
-    });
-
-    return function () {
-      el.$hammer.destroy();
-      el.$hammer = null;
-    };
+  if (!$hammer) {
+    $hammer = el.$hammer = new Hammer.Manager(el);
   }
-};
 
-var version = '0.3.1';
+  var name = node.name;
+
+  var globalOptions = options[name];
+
+  var localOptions = directives.options;
+  if (localOptions) {
+    localOptions = localOptions.value;
+    localOptions = is.string(localOptions) ? new Function('return ' + localOptions)() : localOptions;
+  }
+
+  var finalOptions = object.extend({}, globalOptions, localOptions);
+
+  $hammer.add(new Hammer[string.capitalize(name)](finalOptions));
+
+  if (finalOptions.event) {
+    name = finalOptions.event;
+  }
+
+  var listener = instance.compileValue(node.keypath, node.value);
+  $hammer.on(name, function (event) {
+    return listener(new Event(event));
+  });
+
+  return function () {
+    el.$hammer.destroy();
+    el.$hammer = null;
+  };
+}
+
+var version = '0.4.0';
 
 var options = {};
 
