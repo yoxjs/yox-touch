@@ -56,9 +56,9 @@ function directive({ el, node, instance, directives }) {
 /**
  * 版本
  *
- * @type {Object}
+ * @type {string}
  */
-export const version = '0.4.0'
+export const version = '0.5.0'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖
@@ -69,13 +69,12 @@ export let options = { }
 
 export function install(Yox) {
 
-  let { utils } = Yox
-  is = utils.is
-  string = utils.string
-  object = utils.object
-  Event = utils.Event
+  is = Yox.is
+  string = Yox.string
+  object = Yox.object
+  Event = Yox.Event
 
-  utils.array.each(
+  Yox.array.each(
     [ 'tap', 'pan', 'pinch', 'press', 'rotate', 'swipe' ],
     function (name) {
       Yox.directive(name, directive)

@@ -55,19 +55,18 @@ function directive(_ref) {
   };
 }
 
-var version = '0.4.0';
+var version = '0.5.0';
 
 var options = {};
 
 function install(Yox) {
-  var utils = Yox.utils;
 
-  is = utils.is;
-  string = utils.string;
-  object = utils.object;
-  Event = utils.Event;
+  is = Yox.is;
+  string = Yox.string;
+  object = Yox.object;
+  Event = Yox.Event;
 
-  utils.array.each(['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe'], function (name) {
+  Yox.array.each(['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe'], function (name) {
     Yox.directive(name, directive);
   });
 }
