@@ -7,7 +7,7 @@ if (!Hammer) {
   throw new Error('[yox-touch] cannot locate Hammer.js.')
 }
 
-let is, object, Event
+let is, string, object, Event
 
 /**
  * 首字母大写
@@ -15,8 +15,8 @@ let is, object, Event
  * @param {string} str
  * @return {string}
  */
-export function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + string.slice(str, 1)
 }
 
 function directive({ el, node, instance, directives }) {
@@ -68,7 +68,7 @@ function directive({ el, node, instance, directives }) {
  *
  * @type {string}
  */
-export const version = '0.6.0'
+export const version = '0.7.0'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖
@@ -80,6 +80,7 @@ export let options = { }
 export function install(Yox) {
 
   is = Yox.is
+  string = Yox.string
   object = Yox.object
   Event = Yox.Event
 

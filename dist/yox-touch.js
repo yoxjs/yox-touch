@@ -11,11 +11,12 @@ if (!Hammer) {
 }
 
 var is = void 0;
+var string = void 0;
 var object = void 0;
 var Event = void 0;
 
 function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + string.slice(str, 1);
 }
 
 function directive(_ref) {
@@ -58,13 +59,14 @@ function directive(_ref) {
   };
 }
 
-var version = '0.6.0';
+var version = '0.7.0';
 
 var options = {};
 
 function install(Yox) {
 
   is = Yox.is;
+  string = Yox.string;
   object = Yox.object;
   Event = Yox.Event;
 
@@ -77,7 +79,6 @@ if (typeof Yox !== 'undefined' && Yox.use) {
   install(Yox);
 }
 
-exports.capitalize = capitalize;
 exports.version = version;
 exports.options = options;
 exports.install = install;
