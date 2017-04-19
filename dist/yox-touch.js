@@ -1,7 +1,7 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.YoxTouch = global.YoxTouch || {})));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.YoxTouch = global.YoxTouch || {})));
 }(this, (function (exports) { 'use strict';
 
 var Hammer = typeof require === 'function' ? require('hammerjs') : window.Hammer;
@@ -11,9 +11,12 @@ if (!Hammer) {
 }
 
 var is = void 0;
-var string = void 0;
 var object = void 0;
 var Event = void 0;
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 function directive(_ref) {
   var el = _ref.el,
@@ -38,7 +41,7 @@ function directive(_ref) {
 
   var finalOptions = object.extend({}, globalOptions, localOptions);
 
-  $hammer.add(new Hammer[string.capitalize(name)](finalOptions));
+  $hammer.add(new Hammer[capitalize(name)](finalOptions));
 
   if (finalOptions.event) {
     name = finalOptions.event;
@@ -55,14 +58,13 @@ function directive(_ref) {
   };
 }
 
-var version = '0.5.0';
+var version = '0.6.0';
 
 var options = {};
 
 function install(Yox) {
 
   is = Yox.is;
-  string = Yox.string;
   object = Yox.object;
   Event = Yox.Event;
 
@@ -75,6 +77,7 @@ if (typeof Yox !== 'undefined' && Yox.use) {
   install(Yox);
 }
 
+exports.capitalize = capitalize;
 exports.version = version;
 exports.options = options;
 exports.install = install;

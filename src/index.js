@@ -7,7 +7,17 @@ if (!Hammer) {
   throw new Error('[yox-touch] cannot locate Hammer.js.')
 }
 
-let is, string, object, Event
+let is, object, Event
+
+/**
+ * 首字母大写
+ *
+ * @param {string} str
+ * @return {string}
+ */
+export function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
 
 function directive({ el, node, instance, directives }) {
 
@@ -18,7 +28,7 @@ function directive({ el, node, instance, directives }) {
 
   // 全局配置
   let { name } = node
-  let globalOptions = options[name]
+  let globalOptions = options[ name ]
 
   // 本地配置
   let localOptions = directives.options
@@ -32,7 +42,7 @@ function directive({ el, node, instance, directives }) {
   let finalOptions = object.extend({ }, globalOptions, localOptions)
 
   $hammer.add(
-    new Hammer[string.capitalize(name)](finalOptions)
+    new Hammer[ capitalize(name) ](finalOptions)
   )
 
   if (finalOptions.event) {
@@ -58,7 +68,7 @@ function directive({ el, node, instance, directives }) {
  *
  * @type {string}
  */
-export const version = '0.5.0'
+export const version = '0.6.0'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖
@@ -70,7 +80,6 @@ export let options = { }
 export function install(Yox) {
 
   is = Yox.is
-  string = Yox.string
   object = Yox.object
   Event = Yox.Event
 
