@@ -48,7 +48,7 @@ function directive(_ref) {
     name = finalOptions.event;
   }
 
-  var listener = instance.compileValue(node.keypath, node.value);
+  var listener = instance.compileDirective(node);
   $hammer.on(name, function (event) {
     return listener(new Event(event));
   });
@@ -59,7 +59,7 @@ function directive(_ref) {
   };
 }
 
-var version = '0.7.0';
+var version = '0.8.0';
 
 var options = {};
 

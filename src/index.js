@@ -49,7 +49,7 @@ function directive({ el, node, instance, directives }) {
     name = finalOptions.event
   }
 
-  let listener = instance.compileValue(node.keypath, node.value)
+  let listener = instance.compileDirective(node)
   $hammer.on(
     name,
     function (event) {
@@ -68,7 +68,7 @@ function directive({ el, node, instance, directives }) {
  *
  * @type {string}
  */
-export const version = '0.7.0'
+export const version = '0.8.0'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖
