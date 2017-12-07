@@ -48,10 +48,12 @@ function directive(_ref) {
     name = finalOptions.event;
   }
 
-  var listener = instance.compileDirective(node);
-  $hammer.on(name, function (event) {
-    return listener(new Event(event));
-  });
+  var result = instance.compileDirective(node);
+  if (result) {
+    $hammer.on(name, function (event) {
+      return result.listener(new Event(event));
+    });
+  }
 
   return function () {
     el.$hammer.destroy();

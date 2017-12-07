@@ -49,13 +49,15 @@ function directive({ el, node, instance, directives }) {
     name = finalOptions.event
   }
 
-  let listener = instance.compileDirective(node)
-  $hammer.on(
-    name,
-    function (event) {
-      return listener(new Event(event))
-    }
-  )
+  let result = instance.compileDirective(node)
+  if (result) {
+    $hammer.on(
+      name,
+      function (event) {
+        return result.listener(new Event(event))
+      }
+    )
+  }
 
   return function () {
     el.$hammer.destroy()
