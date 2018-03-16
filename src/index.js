@@ -49,12 +49,12 @@ function directive({ el, node, instance, directives }) {
     name = finalOptions.event
   }
 
-  let result = instance.compileDirective(node)
-  if (result) {
+  let listener = instance.compileDirective(node)
+  if (listener) {
     $hammer.on(
       name,
       function (event) {
-        return result.listener(new Event(event))
+        return listener(new Event(event))
       }
     )
   }
@@ -70,7 +70,7 @@ function directive({ el, node, instance, directives }) {
  *
  * @type {string}
  */
-export const version = '0.8.0'
+export const version = '0.9.0'
 
 /**
  * 全局默认配置，可用 o-options="{}" 进行覆盖

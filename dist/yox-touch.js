@@ -48,10 +48,10 @@ function directive(_ref) {
     name = finalOptions.event;
   }
 
-  var result = instance.compileDirective(node);
-  if (result) {
+  var listener = instance.compileDirective(node);
+  if (listener) {
     $hammer.on(name, function (event) {
-      return result.listener(new Event(event));
+      return listener(new Event(event));
     });
   }
 
@@ -61,7 +61,7 @@ function directive(_ref) {
   };
 }
 
-var version = '0.8.0';
+var version = '0.9.0';
 
 var options = {};
 
@@ -84,7 +84,5 @@ if (typeof Yox !== 'undefined' && Yox.use) {
 exports.version = version;
 exports.options = options;
 exports.install = install;
-
-Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
