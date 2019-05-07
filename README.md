@@ -12,7 +12,7 @@ npm install yox-touch
 npm install hammerjs
 ```
 
-```javascript
+```js
 import Yox from 'yox'
 import YoxTouch from 'yox-touch'
 Yox.use(YoxTouch)
@@ -29,38 +29,25 @@ CDN
 ## Usage
 
 
-```javascript
+```js
 {
-    methods: {
-        tap: function () {
+  methods: {
+    tap: function () {
 
-        },
-        press: function () {
+    },
+    press: function () {
 
-        }
     }
+  }
 }
 ```
 
-简单用法
-
 ```html
-<button o-tap="tap()">
-    Tap
+<button on-tap="tap()">
+  Tap
 </button>
-<button o-tap="press()">
-    Press
-</button>
-```
-
-高级用法
-
-```html
-<button o-tap="tap()" o-options="{event: 'tap'}">
-    Tap
-</button>
-<button o-tap="press()" o-options="{event: 'press'}">
-    Press
+<button on-tap="press()">
+  Press
 </button>
 ```
 
