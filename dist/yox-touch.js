@@ -1,5 +1,5 @@
 /**
- * yox-touch.js v0.10.0
+ * yox-touch.js v0.10.1
  * (c) 2017-2019 musicode
  * Released under the MIT License.
  */
@@ -23,7 +23,7 @@
    *
    * @type {string}
    */
-  var version = "0.10.0";
+  var version = "0.10.1";
 
   /**
    * 支持的事件，即 on-double-tap 支持的写法
