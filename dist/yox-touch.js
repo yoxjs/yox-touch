@@ -25,43 +25,44 @@
    */
   var version = "0.10.0";
 
+  /**
+   * 支持的事件，即 on-double-tap 支持的写法
+   *
+   * @type {string}
+   */
+  var events = [
+    'tap',
+    'doubleTap',
+
+    'press',
+    'pressUp',
+
+    'pinchStart',
+    'pinchMove',
+    'pinchEnd',
+    'pinchCancel',
+    'pinchIn',
+    'pinchOut',
+
+    'rotateStart',
+    'rotateMove',
+    'rotateEnd',
+    'rotateCancel',
+
+    'swipeLeft',
+    'swipeRight',
+
+    'panStart',
+    'panMove',
+    'panEnd',
+    'panCancel',
+    'panLeft',
+    'panRight' ];
+
   function install(Yox) {
 
     Yox.array.each(
-      [
-        'tap',
-        'doubleTap',
-
-        'press',
-        'pressUp',
-
-        'pinchStart',
-        'pinchMove',
-        'pinchEnd',
-        'pinchCancel',
-        'pinchIn',
-        'pinchOut',
-
-        'rotateStart',
-        'rotateMove',
-        'rotateEnd',
-        'rotateCancel',
-
-        'swipeLeft',
-        'swipeRight',
-        'swipeUp',
-        'swipeDown',
-
-        'panStart',
-        'panMove',
-        'panEnd',
-        'panCancel',
-        'panLeft',
-        'panRight',
-        'panUp',
-        'panDown'
-
-      ],
+      events,
       function (name) {
         Yox.dom.specialEvents[name] = {
           on: function on(node, listener) {
@@ -82,11 +83,7 @@
 
   }
 
-  // 如果全局环境已有 Yox，自动安装
-  if (typeof Yox !== 'undefined' && Yox.use) {
-    install(Yox);
-  }
-
+  exports.events = events;
   exports.install = install;
   exports.version = version;
 

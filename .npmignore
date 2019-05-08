@@ -1,6 +1,7 @@
 test
 node_modules
 dist
+build
 .gitignore
 .npmignore
 package-lock.json

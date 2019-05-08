@@ -10,7 +10,6 @@
     "mvvm"
   ],
   "scripts": {
-    "source": "rollup -c",
     "dev": "node_modules/.bin/rollup -c ./build/config.dev.js",
     "prod": "node_modules/.bin/rollup -c ./build/config.prod.js"
   },

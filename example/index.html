@@ -31,7 +31,7 @@
           on-swipe-right="test()"
           on-swipe-up="test()"
           on-swipe-down="test()"
-
+{{!
           on-rotate-start="test()"
           on-rotate-move="test()"
           on-rotate-end="test()"
@@ -52,6 +52,8 @@
           on-pinch-cancel="test()"
           on-pinch-in="test()"
           on-pinch-out="test()"
+
+}}
         >
           {{#each gestures}}
             {{this}}<br>
@@ -63,6 +65,7 @@
     <script src="./yox.js"></script>
     <script src="../dist/yox-touch.js"></script>
     <script>
+        Yox.use(YoxTouch)
         var instance = new Yox({
           el: '#app',
           data: {
