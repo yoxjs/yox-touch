@@ -14,58 +14,52 @@ if (!Hammer) {
  */
 export const version = process.env.NODE_VERSION
 
-/**
- * 全局默认配置
- *
- * @type {Object}
- */
-export const options = { }
-
 export function install(Yox) {
 
   Yox.array.each(
     [
       'tap',
+      'doubleTap',
 
       'press',
-      'pressup',
+      'pressUp',
 
-      'pinchstart',
-      'pinchmove',
-      'pinchend',
-      'pinchcancel',
-      'pinchin',
-      'pinchout',
+      'pinchStart',
+      'pinchMove',
+      'pinchEnd',
+      'pinchCancel',
+      'pinchIn',
+      'pinchOut',
 
-      'rotatestart',
-      'rotatemove',
-      'rotateend',
-      'rotatecancel',
+      'rotateStart',
+      'rotateMove',
+      'rotateEnd',
+      'rotateCancel',
 
-      'swipeleft',
-      'swiperight',
-      'swipeup',
-      'swipedown',
+      'swipeLeft',
+      'swipeRight',
+      'swipeUp',
+      'swipeDown',
 
-      'panstart',
-      'panmove',
-      'panend',
-      'pancancel',
-      'panleft',
-      'panright',
-      'panup',
-      'pandown'
+      'panStart',
+      'panMove',
+      'panEnd',
+      'panCancel',
+      'panLeft',
+      'panRight',
+      'panUp',
+      'panDown'
 
     ],
     function (name) {
       Yox.dom.specialEvents[name] = {
         on(node, listener) {
-          const hammer = node.$hammer || (node.$hammer = new Hammer(node, options[name]))
-          hammer.on(name, listener)
+          const hammer = node.$hammer || (node.$hammer = new Hammer(node))
+          hammer.on(Yox.string.lower(name), listener)
         },
         off(node, listener) {
           const hammer = node.$hammer
-          hammer.off(name, listener)
+          hammer.off(Yox.string.lower(name), listener)
           if (Yox.object.falsy(hammer.handlers)) {
             hammer.destroy()
             node.$hammer = null

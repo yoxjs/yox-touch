@@ -25,58 +25,52 @@
    */
   var version = "0.10.0";
 
-  /**
-   * 全局默认配置
-   *
-   * @type {Object}
-   */
-  var options = { };
-
   function install(Yox) {
 
     Yox.array.each(
       [
         'tap',
+        'doubleTap',
 
         'press',
-        'pressup',
+        'pressUp',
 
-        'pinchstart',
-        'pinchmove',
-        'pinchend',
-        'pinchcancel',
-        'pinchin',
-        'pinchout',
+        'pinchStart',
+        'pinchMove',
+        'pinchEnd',
+        'pinchCancel',
+        'pinchIn',
+        'pinchOut',
 
-        'rotatestart',
-        'rotatemove',
-        'rotateend',
-        'rotatecancel',
+        'rotateStart',
+        'rotateMove',
+        'rotateEnd',
+        'rotateCancel',
 
-        'swipeleft',
-        'swiperight',
-        'swipeup',
-        'swipedown',
+        'swipeLeft',
+        'swipeRight',
+        'swipeUp',
+        'swipeDown',
 
-        'panstart',
-        'panmove',
-        'panend',
-        'pancancel',
-        'panleft',
-        'panright',
-        'panup',
-        'pandown'
+        'panStart',
+        'panMove',
+        'panEnd',
+        'panCancel',
+        'panLeft',
+        'panRight',
+        'panUp',
+        'panDown'
 
       ],
       function (name) {
         Yox.dom.specialEvents[name] = {
           on: function on(node, listener) {
-            var hammer = node.$hammer || (node.$hammer = new Hammer(node, options[name]));
-            hammer.on(name, listener);
+            var hammer = node.$hammer || (node.$hammer = new Hammer(node));
+            hammer.on(Yox.string.lower(name), listener);
           },
           off: function off(node, listener) {
             var hammer = node.$hammer;
-            hammer.off(name, listener);
+            hammer.off(Yox.string.lower(name), listener);
             if (Yox.object.falsy(hammer.handlers)) {
               hammer.destroy();
               node.$hammer = null;
@@ -94,7 +88,6 @@
   }
 
   exports.install = install;
-  exports.options = options;
   exports.version = version;
 
   Object.defineProperty(exports, '__esModule', { value: true });

@@ -3,42 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>touch</title>
+    <style>
+      html,
+      body,
+      #app {
+        height: 100%;
+      }
+      .box {
+        height: 100%;
+        background-color: lightblue;
+      }
+    </style>
 </head>
 <body>
     <div id="app"></div>
 
     <script id="template" type="plain/text">
 
-        <div>
-          <button on-tap="tap()">
-            tap
-          </button>
-          <button on-press="press">
-            press
-          </button>
+        <div
+          class="box"
+          on-tap="test()"
+          on-press="test()"
+          on-press-up="test()"
+          on-double-tap="test()"
+
+          on-swipe-left="test()"
+          on-swipe-right="test()"
+          on-swipe-up="test()"
+          on-swipe-down="test()"
+
+          on-rotate-start="test()"
+          on-rotate-move="test()"
+          on-rotate-end="test()"
+          on-rotate-cancel="test()"
+
+          on-pan-start="test()"
+          on-pan-move="test()"
+          on-pan-end="test()"
+          on-pan-cancel="test()"
+          on-pan-left="test()"
+          on-pan-right="test()"
+          on-pan-up="test()"
+          on-pan-down="test()"
+
+          on-pinch-start="test()"
+          on-pinch-move="test()"
+          on-pinch-end="test()"
+          on-pinch-cancel="test()"
+          on-pinch-in="test()"
+          on-pinch-out="test()"
+        >
+          {{#each gestures}}
+            {{this}}<br>
+          {{/each}}
         </div>
 
     </script>
-    <script src="https://cdn.staticfile.org/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdn.staticfile.org/hammer.js/2.0.8/hammer.js"></script>
     <script src="./yox.js"></script>
     <script src="../dist/yox-touch.js"></script>
     <script>
         var instance = new Yox({
           el: '#app',
           data: {
-            pressOptions: {
-              event: 'xxx'
-            }
+            gestures: []
           },
           template: '#template',
-          events: {
-            press: function () {
-              console.log('press', this, arguments)
-            }
-          },
           methods: {
-            tap: function () {
-              console.log('tap', this, arguments)
+            test: function (e) {
+              this.append('gestures', e.type)
             }
           }
         })
