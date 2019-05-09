@@ -1,5 +1,5 @@
 /**
- * yox-touch.js v0.10.1
+ * yox-touch.js v0.10.2
  * (c) 2017-2019 musicode
  * Released under the MIT License.
  */
@@ -23,7 +23,7 @@
    *
    * @type {string}
    */
-  var version = "0.10.1";
+  var version = "0.10.2";
 
   /**
    * 支持的事件，即 on-double-tap 支持的写法
@@ -64,7 +64,7 @@
     Yox.array.each(
       events,
       function (name) {
-        Yox.dom.specialEvents[name] = {
+        Yox.dom.addSpecialEvent(name, {
           on: function on(node, listener) {
             var hammer = node.$hammer || (node.$hammer = new Hammer(node));
             hammer.on(Yox.string.lower(name), listener);
@@ -77,7 +77,7 @@
               node.$hammer = null;
             }
           }
-        };
+        });
       }
     );
 

@@ -54,7 +54,7 @@ export function install(Yox) {
   Yox.array.each(
     events,
     function (name) {
-      Yox.dom.specialEvents[name] = {
+      Yox.dom.addSpecialEvent(name, {
         on(node, listener) {
           const hammer = node.$hammer || (node.$hammer = new Hammer(node))
           hammer.on(Yox.string.lower(name), listener)
@@ -67,7 +67,7 @@ export function install(Yox) {
             node.$hammer = null
           }
         }
-      }
+      })
     }
   )
 

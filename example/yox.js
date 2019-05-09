@@ -1,5 +1,5 @@
 /**
- * yox.js v1.0.0-alpha.21
+ * yox.js v1.0.0-alpha.23
  * (c) 2017-2019 musicode
  * Released under the MIT License.
  */
@@ -31,7 +31,6 @@
   var RAW_DIRECTIVE = 'directive';
   var RAW_TRANSITION = 'transition';
   var RAW_THIS = 'this';
-  var RAW_TYPE = 'type';
   var RAW_VALUE = 'value';
   var RAW_LENGTH = 'length';
   var RAW_FUNCTION = 'function';
@@ -822,7 +821,7 @@
       each$1(keypath, function (key, isLast) {
           if (object != NULL) {
               // 先直接取值
-              var value = object[key], 
+              var value = object[key],
               // 紧接着判断值是否存在
               // 下面会处理计算属性的值，不能在它后面设置 hasValue
               hasValue = isDef(value);
@@ -921,7 +920,7 @@
   /**
    * 是否有原生的日志特性，没有必要单独实现
    */
-  var nativeConsole = typeof console !== RAW_UNDEFINED ? console : NULL, 
+  var nativeConsole = typeof console !== RAW_UNDEFINED ? console : NULL,
   /**
    * 当前是否是源码调试，如果开启了代码压缩，empty function 里的注释会被干掉
    */
@@ -1054,31 +1053,6 @@
           return isComplete;
       };
       /**
-       * 是否已监听某个事件
-       *
-       * @param type
-       * @param listener
-       */
-      Emitter.prototype.has = function (type, listener) {
-          var instance = this, listeners = instance.listeners, _a = parseNamespace(instance.ns, type), name = _a.name, ns = _a.ns, result = TRUE, matchListener = createMatchListener(listener), each$1 = function (list) {
-              each(list, function (options) {
-                  if (matchListener(options) && matchNamespace(ns, options)) {
-                      return result = FALSE;
-                  }
-              });
-              return result;
-          };
-          if (name) {
-              if (listeners[name]) {
-                  each$1(listeners[name]);
-              }
-          }
-          else if (ns) {
-              each$2(listeners, each$1);
-          }
-          return !result;
-      };
-      /**
        * 注册监听
        *
        * @param type
@@ -1094,7 +1068,7 @@
               push(listeners[name] || (listeners[name] = []), options);
           }
           else {
-              fatal("invoke emitter.on(type, listener) failed.");
+              fatal("Invoke emitter.on(type, listener) failed.");
           }
       };
       /**
@@ -1132,10 +1106,35 @@
               // 但你不知道它是空值
               {
                   if (arguments.length > 0) {
-                      warn("invoke emitter.off(type), but [type] is undefined or null.");
+                      warn("emitter.off(type) is invoked, but the \"type\" argument is undefined or null.");
                   }
               }
           }
+      };
+      /**
+       * 是否已监听某个事件
+       *
+       * @param type
+       * @param listener
+       */
+      Emitter.prototype.has = function (type, listener) {
+          var instance = this, listeners = instance.listeners, _a = parseNamespace(instance.ns, type), name = _a.name, ns = _a.ns, result = TRUE, matchListener = createMatchListener(listener), each$1 = function (list) {
+              each(list, function (options) {
+                  if (matchListener(options) && matchNamespace(ns, options)) {
+                      return result = FALSE;
+                  }
+              });
+              return result;
+          };
+          if (name) {
+              if (listeners[name]) {
+                  each$1(listeners[name]);
+              }
+          }
+          else if (ns) {
+              each$2(listeners, each$1);
+          }
+          return !result;
       };
       return Emitter;
   }());
@@ -1456,7 +1455,7 @@
   function createComponent(vnode, options) {
       // 渲染同步加载的组件时，vnode.node 为空
       // 渲染异步加载的组件时，vnode.node 不为空，因为初始化用了占位节点
-      var child = (vnode.parent || vnode.context).create(options, vnode, vnode.node), 
+      var child = (vnode.parent || vnode.context).create(options, vnode, vnode.node),
       // 组件初始化创建的元素
       node = child.$el;
       if (node) {
@@ -2688,7 +2687,7 @@
       Parser.prototype.scanBinary = function (startIndex) {
           // 二元运算，如 a + b * c / d，这里涉及运算符的优先级
           // 算法参考 https://en.wikipedia.org/wiki/Shunting-yard_algorithm
-          var instance = this, 
+          var instance = this,
           // 格式为 [ index1, node1, index2, node2, ... ]
           output = [], token, index, operator, operatorInfo, lastOperator, lastOperatorInfo;
           while (TRUE) {
@@ -3061,45 +3060,45 @@
   }
 
   // 当前不位于 block 之间
-  var BLOCK_MODE_NONE = 1, 
+  var BLOCK_MODE_NONE = 1,
   // {{ x }}
-  BLOCK_MODE_SAFE = 2, 
+  BLOCK_MODE_SAFE = 2,
   // {{{ x }}}
-  BLOCK_MODE_UNSAFE = 3, 
+  BLOCK_MODE_UNSAFE = 3,
   // 表达式的静态 keypath
-  STATIC_KEYPATH = 'sk', 
+  STATIC_KEYPATH = 'sk',
   // 缓存编译模板
-  compileCache = {}, 
+  compileCache = {},
   // 缓存编译正则
-  patternCache$1 = {}, 
+  patternCache$1 = {},
   // 指令分隔符，如 on-click 和 lazy-click
-  directiveSeparator = '-', 
+  directiveSeparator = '-',
   // 没有命名空间的事件
-  eventPattern = /^[_$a-z]([\w]+)?$/i, 
+  eventPattern = /^[_$a-z]([\w]+)?$/i,
   // 有命名空间的事件
-  eventNamespacePattern = /^[_$a-z]([\w]+)?\.[_$a-z]([\w]+)?$/i, 
+  eventNamespacePattern = /^[_$a-z]([\w]+)?\.[_$a-z]([\w]+)?$/i,
   // 标签
-  tagPattern = /<(\/)?([$a-z][-a-z0-9]*)/i, 
+  tagPattern = /<(\/)?([$a-z][-a-z0-9]*)/i,
   // 注释
-  commentPattern = /<!--[\s\S]*?-->/g, 
+  commentPattern = /<!--[\s\S]*?-->/g,
   // 属性的 name
   // 支持 on-click.namespace="" 或 on-get-out="" 或 xml:xx=""
-  attributePattern = /^\s*([-.:\w]+)(['"])?(?:=(['"]))?/, 
+  attributePattern = /^\s*([-.:\w]+)(['"])?(?:=(['"]))?/,
   // 首字母大写，或中间包含 -
-  componentNamePattern = /^[$A-Z]|-/, 
+  componentNamePattern = /^[$A-Z]|-/,
   // 自闭合标签
-  selfClosingTagPattern = /^\s*(\/)?>/, 
+  selfClosingTagPattern = /^\s*(\/)?>/,
   // 常见的自闭合标签
-  selfClosingTagNames = 'area,base,embed,track,source,param,input,col,img,br,hr'.split(','), 
+  selfClosingTagNames = 'area,base,embed,track,source,param,input,col,img,br,hr'.split(','),
   // 常见的 svg 标签
-  svgTagNames = 'svg,g,defs,desc,metadata,symbol,use,image,path,rect,circle,line,ellipse,polyline,polygon,text,tspan,tref,textpath,marker,pattern,clippath,mask,filter,cursor,view,animate,font,font-face,glyph,missing-glyph,foreignObject'.split(','), 
+  svgTagNames = 'svg,g,defs,desc,metadata,symbol,use,image,path,rect,circle,line,ellipse,polyline,polygon,text,tspan,tref,textpath,marker,pattern,clippath,mask,filter,cursor,view,animate,font,font-face,glyph,missing-glyph,foreignObject'.split(','),
   // 常见的字符串类型的属性
   // 注意：autocomplete,autocapitalize 不是布尔类型
-  stringProperyNames = 'id,class,name,value,for,accesskey,title,style,src,type,href,target,alt,placeholder,preload,poster,wrap,accept,pattern,dir,autocomplete,autocapitalize'.split(','), 
+  stringProperyNames = 'id,class,name,value,for,accesskey,title,style,src,type,href,target,alt,placeholder,preload,poster,wrap,accept,pattern,dir,autocomplete,autocapitalize'.split(','),
   // 常见的数字类型的属性
-  numberProperyNames = 'min,minlength,max,maxlength,step,width,height,size,rows,cols,tabindex'.split(','), 
+  numberProperyNames = 'min,minlength,max,maxlength,step,width,height,size,rows,cols,tabindex'.split(','),
   // 常见的布尔类型的属性
-  booleanProperyNames = 'disabled,checked,required,multiple,readonly,autofocus,autoplay,controls,loop,muted,novalidate,draggable,hidden,spellcheck'.split(','), 
+  booleanProperyNames = 'disabled,checked,required,multiple,readonly,autofocus,autoplay,controls,loop,muted,novalidate,draggable,hidden,spellcheck'.split(','),
   // 某些属性 attribute name 和 property name 不同
   attr2Prop = {};
   // 列举几个常见的
@@ -3133,23 +3132,23 @@
           return nodeList;
       }
       nodeList = [];
-      var nodeStack = [], 
+      var nodeStack = [],
       // 持有 if/elseif/else 节点
-      ifStack = [], currentElement, currentAttribute, length = content.length, 
+      ifStack = [], currentElement, currentAttribute, length = content.length,
       // 当前处理的位置
-      index = 0, 
+      index = 0,
       // 下一段开始的位置
-      nextIndex = 0, 
+      nextIndex = 0,
       // 开始定界符的位置，表示的是 {{ 的右侧位置
-      openBlockIndex = 0, 
+      openBlockIndex = 0,
       // 结束定界符的位置，表示的是 }} 的左侧位置
-      closeBlockIndex = 0, 
+      closeBlockIndex = 0,
       // 当前正在处理或即将处理的 block 类型
       blockMode = BLOCK_MODE_NONE, code, startQuote, fatal$1 = function (msg) {
           {
               fatal("Error compiling " + RAW_TEMPLATE + ":\n" + content + "\n- " + msg);
           }
-      }, 
+      },
       /**
        * 常见的两种情况：
        *
@@ -3173,7 +3172,7 @@
       }, popStack = function (type, tagName) {
           var node = pop(nodeStack);
           if (node && node.type === type) {
-              var children = node.children, 
+              var children = node.children,
               // 优化单个子节点
               child = children && children.length === 1 && children[0], isElement = type === ELEMENT, isAttribute = type === ATTRIBUTE, isProperty = type === PROPERTY, isDirective = type === DIRECTIVE;
               var currentBranch = last(nodeStack);
@@ -3181,9 +3180,16 @@
                   if (currentBranch.isStatic && !node.isStatic) {
                       currentBranch.isStatic = FALSE;
                   }
-                  if (!currentBranch.isComplex
-                      && (node.isComplex || isElement)) {
-                      currentBranch.isComplex = TRUE;
+                  if (!currentBranch.isComplex) {
+                      if (node.isComplex || isElement) {
+                          currentBranch.isComplex = TRUE;
+                      }
+                      // <div {{#if xx}} xx{{/if}}>
+                      else if (currentElement
+                          && currentElement !== currentBranch
+                          && (isAttribute || isProperty || isDirective)) {
+                          currentBranch.isComplex = TRUE;
+                      }
                   }
               }
               {
@@ -3266,7 +3272,7 @@
               }
               return node;
           }
-          else {
+          {
               fatal$1("\u51FA\u6808\u8282\u70B9\u7C7B\u578B\u4E0D\u5339\u914D");
           }
       }, processElementSingleExpression = function (element, child) {
@@ -3337,11 +3343,11 @@
       }, processDirectiveSingleText = function (directive, child) {
           var text = child.text;
           // 指令的值是纯文本，可以预编译表达式，提升性能
-          var expr = compile(text), 
+          var expr = compile(text),
           // model="xx" model="this.x" 值只能是标识符或 Member
-          isModel = directive.ns === DIRECTIVE_MODEL, 
+          isModel = directive.ns === DIRECTIVE_MODEL,
           // lazy 的值必须是大于 0 的数字
-          isLazy = directive.ns === DIRECTIVE_LAZY, 
+          isLazy = directive.ns === DIRECTIVE_LAZY,
           // 校验事件名称
           isEvent = directive.ns === DIRECTIVE_EVENT;
           if (expr) {
@@ -3461,11 +3467,11 @@
           // 因为 attrs 具有动态性，compiler 无法保证最终一定会输出 type 属性
           if (element.isStyle && falsy(element.attrs)) {
               element.attrs = [
-                  createProperty(RAW_TYPE, HINT_STRING, 'text/css')
+                  createProperty('type', HINT_STRING, 'text/css')
               ];
           }
       }, bindSpecialAttr = function (element, attr) {
-          var name = attr.name, value = attr.value, 
+          var name = attr.name, value = attr.value,
           // 这三个属性值要求是字符串
           isStringValueRequired = name === RAW_NAME || name === RAW_SLOT;
           {
@@ -4093,13 +4099,22 @@
    *
    */
   // 是否要执行 join 操作
-  var joinStack = [], 
+  var joinStack = [],
   // 是否正在收集子节点
-  collectStack = [], nodeStringify = {}, RENDER_SLOT = 'a', RENDER_EACH = 'b', RENDER_EXPRESSION = 'c', RENDER_EXPRESSION_ARG = 'd', RENDER_EXPRESSION_VNODE = 'e', RENDER_TEXT_VNODE = 'f', RENDER_ELEMENT_VNODE = 'g', RENDER_PARTIAL = 'h', RENDER_IMPORT = 'i', ARG_CONTEXT = 'j', SEP_COMMA = ',', SEP_COLON = ':', SEP_PLUS = '+', STRING_TRUE = '!0', STRING_FALSE = '!1', STRING_EMPTY = toJSON(EMPTY_STRING), CODE_RETURN = 'return ', CODE_PREFIX = "function(" + join([
+  collectStack = [], nodeStringify = {}, RENDER_SLOT = 'a', RENDER_EACH = 'b', RENDER_EXPRESSION = 'c', RENDER_EXPRESSION_ARG = 'd', RENDER_EXPRESSION_VNODE = 'e', RENDER_TEXT_VNODE = 'f', RENDER_ATTRIBUTE_VNODE = 'g', RENDER_PROPERTY_VNODE = 'h', RENDER_LAZY_VNODE = 'i', RENDER_TRANSITION_VNODE = 'j', RENDER_MODEL_VNODE = 'k', RENDER_EVENT_METHOD_VNODE = 'l', RENDER_EVENT_NAME_VNODE = 'm', RENDER_DIRECTIVE_VNODE = 'n', RENDER_SPREAD_VNODE = 'o', RENDER_ELEMENT_VNODE = 'p', RENDER_PARTIAL = 'q', RENDER_IMPORT = 'r', ARG_CONTEXT = 's', SEP_COMMA = ',', SEP_COLON = ':', SEP_PLUS = '+', STRING_TRUE = '!0', STRING_FALSE = '!1', STRING_EMPTY = toJSON(EMPTY_STRING), CODE_RETURN = 'return ', CODE_PREFIX = "function(" + join([
       RENDER_EXPRESSION,
       RENDER_EXPRESSION_ARG,
       RENDER_EXPRESSION_VNODE,
       RENDER_TEXT_VNODE,
+      RENDER_ATTRIBUTE_VNODE,
+      RENDER_PROPERTY_VNODE,
+      RENDER_LAZY_VNODE,
+      RENDER_TRANSITION_VNODE,
+      RENDER_MODEL_VNODE,
+      RENDER_EVENT_METHOD_VNODE,
+      RENDER_EVENT_NAME_VNODE,
+      RENDER_DIRECTIVE_VNODE,
+      RENDER_SPREAD_VNODE,
       RENDER_ELEMENT_VNODE,
       RENDER_SLOT,
       RENDER_PARTIAL,
@@ -4188,9 +4203,26 @@
           }));
       }
       if (isDef(yes) || isDef(no)) {
-          result = test + "?" + (isDef(yes) ? yes : STRING_EMPTY) + ":" + (isDef(no) ? no : STRING_EMPTY);
+          var isJoin = last(joinStack);
+          if (isJoin) {
+              if (!isDef(yes)) {
+                  yes = STRING_EMPTY;
+              }
+              if (!isDef(no)) {
+                  no = STRING_EMPTY;
+              }
+          }
+          if (!isDef(no)) {
+              result = test + " && " + yes;
+          }
+          else if (!isDef(yes)) {
+              result = "!" + test + " && " + no;
+          }
+          else {
+              result = test + "?" + yes + ":" + no;
+          }
           // 如果是连接操作，因为 ?: 优先级最低，因此要加 ()
-          return last(joinStack)
+          return isJoin
               ? stringifyGroup(result)
               : result;
       }
@@ -4298,46 +4330,44 @@
       pop(collectStack);
       return renderElement(stringifyObject(data), falsy(outputAttrs)
           ? UNDEFINED
-          : stringifyArray(outputAttrs), outputChilds, outputSlots);
+          : stringifyFunction(join(outputAttrs, SEP_COMMA)), outputChilds, outputSlots);
   };
   nodeStringify[ATTRIBUTE] = function (node) {
-      var result = {
-          type: node.type,
-          name: toJSON(node.name),
-          binding: node.binding
-      };
-      if (node.binding) {
-          result.expr = toJSON(node.expr);
-      }
-      else {
-          result.value = stringifyValue(node.value, node.expr, node.children);
-      }
-      return stringifyObject(result);
+      var binding = node.binding;
+      return stringifyCall(RENDER_ATTRIBUTE_VNODE, join(trimArgs([
+          toJSON(node.name),
+          binding ? STRING_TRUE : UNDEFINED,
+          binding ? toJSON(node.expr) : UNDEFINED,
+          binding ? UNDEFINED : stringifyValue(node.value, node.expr, node.children)
+      ]), SEP_COMMA));
   };
   nodeStringify[PROPERTY] = function (node) {
-      var result = {
-          type: node.type,
-          name: toJSON(node.name),
-          hint: node.hint,
-          binding: node.binding
-      };
-      if (node.binding) {
-          result.expr = toJSON(node.expr);
-      }
-      else {
-          result.value = stringifyValue(node.value, node.expr, node.children);
-      }
-      return stringifyObject(result);
+      var binding = node.binding;
+      return stringifyCall(RENDER_PROPERTY_VNODE, join(trimArgs([
+          toJSON(node.name),
+          toJSON(node.hint),
+          binding ? STRING_TRUE : UNDEFINED,
+          binding ? toJSON(node.expr) : UNDEFINED,
+          binding ? UNDEFINED : stringifyValue(node.value, node.expr, node.children)
+      ]), SEP_COMMA));
   };
   nodeStringify[DIRECTIVE] = function (node) {
-      var type = node.type, ns = node.ns, expr = node.expr, result = {
-          // renderer 遍历 attrs 要用 type
-          type: type,
-          ns: toJSON(ns),
-          name: toJSON(node.name),
-          key: toJSON(node.key),
-          value: toJSON(node.value)
-      };
+      var ns = node.ns, name = node.name, key = node.key, value = node.value, expr = node.expr;
+      if (ns === DIRECTIVE_LAZY) {
+          return stringifyCall(RENDER_LAZY_VNODE, join([toJSON(name), toJSON(value)], SEP_COMMA));
+      }
+      if (ns === RAW_TRANSITION) {
+          return stringifyCall(RENDER_TRANSITION_VNODE, toJSON(value));
+      }
+      // <input model="id">
+      if (ns === DIRECTIVE_MODEL) {
+          return stringifyCall(RENDER_MODEL_VNODE, toJSON(expr));
+      }
+      var renderName = RENDER_DIRECTIVE_VNODE, args = [
+          toJSON(ns),
+          toJSON(name),
+          toJSON(key),
+          toJSON(value) ];
       // 尽可能把表达式编译成函数，这样对外界最友好
       //
       // 众所周知，事件指令会编译成函数，对于自定义指令来说，也要尽可能编译成函数
@@ -4347,38 +4377,36 @@
       if (expr) {
           // 如果表达式明确是在调用方法，则序列化成 method + args 的形式
           if (expr.type === CALL) {
+              if (ns === DIRECTIVE_EVENT) {
+                  renderName = RENDER_EVENT_METHOD_VNODE;
+              }
               // compiler 保证了函数调用的 name 是标识符
-              result.method = toJSON(expr.name.name);
+              push(args, toJSON(expr.name.name));
               // 为了实现运行时动态收集参数，这里序列化成函数
               if (!falsy(expr.args)) {
                   // args 函数在触发事件时调用，调用时会传入它的作用域，因此这里要加一个参数
-                  result.args = stringifyFunction(CODE_RETURN + stringifyArray(expr.args.map(stringifyExpressionArg)), ARG_CONTEXT);
+                  push(args, stringifyFunction(CODE_RETURN + stringifyArray(expr.args.map(stringifyExpressionArg)), ARG_CONTEXT));
               }
           }
           // 不是调用方法，就是事件转换
           else if (ns === DIRECTIVE_EVENT) {
-              result.event = toJSON(expr.raw);
-          }
-          // <input model="id">
-          else if (ns === DIRECTIVE_MODEL) {
-              result.expr = toJSON(expr);
+              renderName = RENDER_EVENT_NAME_VNODE;
+              push(args, toJSON(expr.raw));
           }
           else if (ns === DIRECTIVE_CUSTOM) {
               // 取值函数
               // getter 函数在触发事件时调用，调用时会传入它的作用域，因此这里要加一个参数
               if (expr.type !== LITERAL) {
-                  result.getter = stringifyFunction(CODE_RETURN + stringifyExpressionArg(expr), ARG_CONTEXT);
+                  push(args, UNDEFINED); // method
+                  push(args, UNDEFINED); // args
+                  push(args, stringifyFunction(CODE_RETURN + stringifyExpressionArg(expr), ARG_CONTEXT));
               }
           }
       }
-      return stringifyObject(result);
+      return stringifyCall(renderName, join(trimArgs(args), SEP_COMMA));
   };
   nodeStringify[SPREAD] = function (node) {
-      return stringifyObject({
-          type: node.type,
-          expr: toJSON(node.expr),
-          binding: node.binding
-      });
+      return stringifyCall(RENDER_SPREAD_VNODE, join(trimArgs([toJSON(node.expr), node.binding ? STRING_TRUE : UNDEFINED]), SEP_COMMA));
   };
   nodeStringify[TEXT] = function (node) {
       var result = toJSON(node.text);
@@ -4405,7 +4433,7 @@
       return stringifyCall(RENDER_EACH, join(trimArgs([generate, toJSON(node.expr), node.index ? toJSON(node.index) : UNDEFINED]), SEP_COMMA));
   };
   nodeStringify[PARTIAL] = function (node) {
-      var name = toJSON(node.name), 
+      var name = toJSON(node.name),
       // compiler 保证了 children 一定有值
       children = stringifyFunction(stringifyChildren(node.children, node.isComplex));
       return stringifyCall(RENDER_PARTIAL, "" + name + SEP_COMMA + children);
@@ -4513,7 +4541,7 @@
       data[key] = value;
   }
   function render(context, template, filters, partials, directives, transitions) {
-      var $keypath = EMPTY_STRING, $scope = { $keypath: $keypath }, $stack = [$keypath, $scope], vnodeStack = [], localPartials = {}, lookup = function (stack, index, key, node, depIgnore, defaultKeypath) {
+      var $keypath = EMPTY_STRING, $scope = { $keypath: $keypath }, $stack = [$keypath, $scope], $vnode, vnodeStack = [], localPartials = {}, lookup = function (stack, index, key, node, depIgnore, defaultKeypath) {
           var keypath = join$1(stack[index], key), scope = stack[index + 1];
           node.ak = keypath;
           // 如果最后还是取不到值，用回最初的 keypath
@@ -4560,89 +4588,17 @@
           return execute$1(expr, function (keypath, node) {
               return lookup(renderStack, length - 2 * ((node.offset || 0) + 1), keypath, node, depIgnore);
           }, context);
-      }, addBinding = function (vnode, attr) {
-          var expr = attr.expr, value = getValue(expr, TRUE), key = join$1(DIRECTIVE_BINDING, attr.name);
+      }, addBinding = function (vnode, name, expr, hint) {
+          var value = getValue(expr, TRUE), key = join$1(DIRECTIVE_BINDING, name);
           setPair(vnode, 'directives', key, {
               ns: DIRECTIVE_BINDING,
-              name: attr.name,
+              name: name,
               key: key,
               hooks: directives[DIRECTIVE_BINDING],
               binding: expr.ak,
-              hint: attr.hint
+              hint: hint
           });
           return value;
-      }, spreadObject = function (vnode, attr) {
-          var expr = attr.expr, value = getValue(expr, attr.binding);
-          // 数组也算一种对象，要排除掉
-          if (object(value) && !array(value)) {
-              each$2(value, function (value, key) {
-                  setPair(vnode, 'props', key, value);
-              });
-              var absoluteKeypath = expr.ak;
-              if (absoluteKeypath) {
-                  var key = join$1(DIRECTIVE_BINDING, absoluteKeypath);
-                  setPair(vnode, 'directives', key, {
-                      ns: DIRECTIVE_BINDING,
-                      name: EMPTY_STRING,
-                      key: key,
-                      hooks: directives[DIRECTIVE_BINDING],
-                      binding: join$1(absoluteKeypath, RAW_WILDCARD)
-                  });
-              }
-          }
-          else {
-              warn("[" + expr.raw + "] \u4E0D\u662F\u5BF9\u8C61\uFF0C\u5EF6\u5C55\u4E2A\u6BDB\u554A");
-          }
-      }, addDirective = function (vnode, attr) {
-          var ns = attr.ns, name = attr.name, key = attr.key, value = attr.value, binding, hooks, getter, handler;
-          switch (ns) {
-              case DIRECTIVE_EVENT:
-                  hooks = directives[DIRECTIVE_EVENT];
-                  handler = attr.event
-                      ? createEventListener(attr.event)
-                      : createMethodListener(attr.method, attr.args, $stack);
-                  break;
-              case RAW_TRANSITION:
-                  vnode.transition = transitions[value];
-                  {
-                      if (!vnode.transition) {
-                          fatal("transition [" + value + "] is not found.");
-                      }
-                  }
-                  return;
-              case DIRECTIVE_MODEL:
-                  hooks = directives[DIRECTIVE_MODEL];
-                  vnode.model = getValue(attr.expr, TRUE);
-                  binding = attr.expr.ak;
-                  break;
-              case DIRECTIVE_LAZY:
-                  setPair(vnode, 'lazy', name, value);
-                  return;
-              default:
-                  hooks = directives[name];
-                  if (attr.method) {
-                      handler = createMethodListener(attr.method, attr.args, $stack);
-                  }
-                  else if (attr.getter) {
-                      getter = createGetter(attr.getter, $stack);
-                  }
-                  break;
-          }
-          if (hooks) {
-              setPair(vnode, 'directives', key, {
-                  ns: ns,
-                  name: name,
-                  key: key,
-                  value: value,
-                  binding: binding,
-                  hooks: hooks,
-                  getter: getter,
-                  handler: handler
-              });
-          }
-          else {
-              fatal("directive [" + name + "] is not found.");
-          }
       }, createEventListener = function (type) {
           return function (event, data) {
               // 事件名称相同的情况，只可能是监听 DOM 事件，比如写一个 Button 组件
@@ -4706,37 +4662,100 @@
                   push(vnodeList, textVnode);
               }
           }
+      }, renderAttributeVnode = function (name, binding, expr, value) {
+          if (binding) {
+              value = addBinding($vnode, name, expr);
+          }
+          if ($vnode.isComponent) {
+              setPair($vnode, 'props', name, value);
+          }
+          else {
+              setPair($vnode, 'nativeAttrs', name, { name: name, value: value });
+          }
+      }, renderPropertyVnode = function (name, hint, binding, expr, value) {
+          if (binding) {
+              value = addBinding($vnode, name, expr, hint);
+          }
+          setPair($vnode, 'nativeProps', name, { name: name, value: value, hint: hint });
+      }, renderLazyVnode = function (name, value) {
+          setPair($vnode, 'lazy', name, value);
+      }, renderTransitionVnode = function (name) {
+          $vnode.transition = transitions[name];
+          {
+              if (!$vnode.transition) {
+                  fatal("transition [" + name + "] is not found.");
+              }
+          }
+      }, renderModelVnode = function (expr) {
+          $vnode.model = getValue(expr, TRUE);
+          setPair($vnode, 'directives', DIRECTIVE_MODEL, {
+              ns: DIRECTIVE_MODEL,
+              name: EMPTY_STRING,
+              key: DIRECTIVE_MODEL,
+              binding: expr.ak,
+              hooks: directives[DIRECTIVE_MODEL]
+          });
+      }, renderEventMethodVnode = function (ns, name, key, value, method, args) {
+          setPair($vnode, 'directives', key, {
+              ns: ns,
+              name: name,
+              key: key,
+              value: value,
+              hooks: directives[DIRECTIVE_EVENT],
+              handler: createMethodListener(method, args, $stack)
+          });
+      }, renderEventNameVnode = function (ns, name, key, value, event) {
+          setPair($vnode, 'directives', key, {
+              ns: ns,
+              name: name,
+              key: key,
+              value: value,
+              hooks: directives[DIRECTIVE_EVENT],
+              handler: createEventListener(event)
+          });
+      }, renderDirectiveVnode = function (ns, name, key, value, method, args, getter) {
+          var hooks = directives[name];
+          {
+              if (!hooks) {
+                  fatal("directive [" + name + "] is not found.");
+              }
+          }
+          setPair($vnode, 'directives', key, {
+              ns: ns,
+              name: name,
+              key: key,
+              value: value,
+              hooks: hooks,
+              getter: getter ? createGetter(getter, $stack) : UNDEFINED,
+              handler: method ? createMethodListener(method, args, $stack) : UNDEFINED
+          });
+      }, renderSpreadVnode = function (expr, binding) {
+          var value = getValue(expr, binding);
+          // 数组也算一种对象，要排除掉
+          if (object(value) && !array(value)) {
+              each$2(value, function (value, key) {
+                  setPair($vnode, 'props', key, value);
+              });
+              var absoluteKeypath = expr['ak'];
+              if (absoluteKeypath) {
+                  var key = join$1(DIRECTIVE_BINDING, absoluteKeypath);
+                  setPair($vnode, 'directives', key, {
+                      ns: DIRECTIVE_BINDING,
+                      name: EMPTY_STRING,
+                      key: key,
+                      hooks: directives[DIRECTIVE_BINDING],
+                      binding: join$1(absoluteKeypath, RAW_WILDCARD)
+                  });
+              }
+          }
+          else {
+              warn("[" + expr.raw + "] \u4E0D\u662F\u5BF9\u8C61\uFF0C\u5EF6\u5C55\u4E2A\u6BDB\u554A");
+          }
       }, renderElementVnode = function (vnode, attrs, childs, slots) {
           if (attrs) {
-              each(attrs, function (attr) {
-                  var name = attr.name, value = attr.value;
-                  switch (attr.type) {
-                      case ATTRIBUTE:
-                          if (attr.binding) {
-                              value = addBinding(vnode, attr);
-                          }
-                          if (vnode.isComponent) {
-                              setPair(vnode, 'props', name, value);
-                          }
-                          else {
-                              setPair(vnode, 'nativeAttrs', name, { name: name, value: value });
-                          }
-                          break;
-                      case PROPERTY:
-                          setPair(vnode, 'nativeProps', name, {
-                              name: name,
-                              value: attr.binding ? addBinding(vnode, attr) : value,
-                              hint: attr.hint
-                          });
-                          break;
-                      case DIRECTIVE:
-                          addDirective(vnode, attr);
-                          break;
-                      case SPREAD:
-                          spreadObject(vnode, attr);
-                          break;
-                  }
-              });
+              $vnode = vnode;
+              attrs();
+              $vnode = UNDEFINED;
           }
           // childs 和 slots 不可能同时存在
           if (childs) {
@@ -4760,7 +4779,7 @@
               push(vnodeList, vnode);
           }
           return vnode;
-      }, 
+      },
       // <slot name="xx"/>
       renderSlot = function (name, defaultRender) {
           var vnodeList = last(vnodeStack), vnodes = context.get(name);
@@ -4775,13 +4794,13 @@
                   defaultRender();
               }
           }
-      }, 
+      },
       // {{#partial name}}
       //   xx
       // {{/partial}}
       renderPartial = function (name, render) {
           localPartials[name] = render;
-      }, 
+      },
       // {{> name}}
       renderImport = function (name) {
           if (localPartials[name]) {
@@ -4790,7 +4809,7 @@
           else {
               var partial = partials[name];
               if (partial) {
-                  partial(renderExpression, renderExpressionArg, renderExpressionVnode, renderTextVnode, renderElementVnode, renderSlot, renderPartial, renderImport, renderEach);
+                  partial(renderExpression, renderExpressionArg, renderExpressionVnode, renderTextVnode, renderAttributeVnode, renderPropertyVnode, renderLazyVnode, renderTransitionVnode, renderModelVnode, renderEventMethodVnode, renderEventNameVnode, renderDirectiveVnode, renderSpreadVnode, renderElementVnode, renderSlot, renderPartial, renderImport, renderEach);
               }
               else {
                   fatal("partial [" + name + "] is not found.");
@@ -4832,7 +4851,7 @@
               value(callback);
           }
       };
-      return template(renderExpression, renderExpressionArg, renderExpressionVnode, renderTextVnode, renderElementVnode, renderSlot, renderPartial, renderImport, renderEach);
+      return template(renderExpression, renderExpressionArg, renderExpressionVnode, renderTextVnode, renderAttributeVnode, renderPropertyVnode, renderLazyVnode, renderTransitionVnode, renderModelVnode, renderEventMethodVnode, renderEventNameVnode, renderDirectiveVnode, renderSpreadVnode, renderElementVnode, renderSlot, renderPartial, renderImport, renderEach);
   }
 
   /**
@@ -5276,7 +5295,7 @@
        * @param oldValue
        */
       Observer.prototype.diff = function (keypath, newValue, oldValue) {
-          var instance = this, syncEmitter = instance.syncEmitter, asyncEmitter = instance.asyncEmitter, asyncChanges = instance.asyncChanges, 
+          var instance = this, syncEmitter = instance.syncEmitter, asyncEmitter = instance.asyncEmitter, asyncChanges = instance.asyncChanges,
           /**
            * 我们认为 $ 开头的变量是不可递归的
            * 比如浏览器中常见的 $0 表示当前选中元素
@@ -5369,7 +5388,7 @@
        */
       Observer.prototype.watch = function (keypath, watcher, immediate) {
           var instance = this, context = instance.context, syncEmitter = instance.syncEmitter, asyncEmitter = instance.asyncEmitter, bind = function (keypath, options) {
-              var emitter = options.sync ? syncEmitter : asyncEmitter, 
+              var emitter = options.sync ? syncEmitter : asyncEmitter,
               // formatWatcherOptions 保证了 options.watcher 一定存在
               listener = {
                   fn: options.watcher,
@@ -5560,7 +5579,7 @@
       node.addEventListener(type, listener, FALSE);
   }, removeEventListener = function (node, type, listener) {
       node.removeEventListener(type, listener, FALSE);
-  }, 
+  },
   // IE9 不支持 classList
   addClass = function (node, className) {
       node.classList.add(className);
@@ -5587,15 +5606,15 @@
           };
       }
   }
-  var CHAR_WHITESPACE = ' ', 
+  var CHAR_WHITESPACE = ' ',
   /**
    * 绑定在 HTML 元素上的事件发射器
    */
-  EMITTER = '$emitter', 
+  EMITTER = '$emitter',
   /**
    * 跟输入事件配套使用的事件
    */
-  COMPOSITION_START = 'compositionstart', 
+  COMPOSITION_START = 'compositionstart',
   /**
    * 跟输入事件配套使用的事件
    */
@@ -5701,7 +5720,7 @@
           // 一个元素，相同的事件，只注册一个 native listener
           if (!nativeListeners[type]) {
               // 特殊事件
-              var special = specialEvents[type], 
+              var special = specialEvents[type],
               // 唯一的原生监听器
               nativeListener = function (event) {
                   var customEvent = event instanceof CustomEvent
@@ -5741,7 +5760,15 @@
               node[EMITTER] = UNDEFINED;
           }
       },
-      specialEvents: specialEvents
+      addSpecialEvent: function (type, hooks) {
+          {
+              if (specialEvents[type]) {
+                  error("\"" + type + "\" special event is existed.");
+              }
+              log("\"" + type + "\" special event is added.");
+          }
+          specialEvents[type] = hooks;
+      }
   };
   specialEvents[EVENT_MODEL] = {
       on: function (node, listener) {
@@ -6262,11 +6289,11 @@
               var result_1 = copy(props);
               each$2(propTypes, function (rule, key) {
                   // 类型
-                  var type = rule.type, 
+                  var type = rule.type,
                   // 默认值
-                  value = rule.value, 
+                  value = rule.value,
                   // 是否必传
-                  required = rule.required, 
+                  required = rule.required,
                   // 实际的值
                   actual = props[key];
                   // 动态化获取是否必填
@@ -6695,7 +6722,7 @@
       /**
        * core 版本
        */
-      Yox.version = "1.0.0-alpha.21";
+      Yox.version = "1.0.0-alpha.23";
       /**
        * 方便外部共用的通用逻辑，特别是写插件，减少重复代码
        */

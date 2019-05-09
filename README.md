@@ -32,7 +32,6 @@ CDN
 
 ## Usage
 
-
 ```html
 <div>
   <button on-tap="tap()">
@@ -66,8 +65,8 @@ Hammmer.default.presets = [
   [Hammmer.Tap],
   [Hammmer.Tap, {event: 'doubletap', taps: 2}, ['tap']],
 ]
-// 2. 设置 yox-touch 注册的事件，事件名是驼峰格式
-// 注意，需要先清空 events 数组，切不可改变 events 的引用，否则内部获取不到该数组
+// 2. 设置 yox-touch 的事件，事件名是驼峰格式
+// 注意，需要先清空 events 数组，但不可改变 events 的引用，否则内部获取不到该数组
 YoxTouch.events.length = 0
 YoxTouch.events.push('tap', 'doubleTap')
 
