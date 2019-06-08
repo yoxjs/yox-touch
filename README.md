@@ -14,7 +14,7 @@ npm install hammerjs
 
 ```js
 import Yox from 'yox'
-import YoxTouch from 'yox-touch'
+import * as YoxTouch from 'yox-touch'
 Yox.use(YoxTouch)
 ```
 
