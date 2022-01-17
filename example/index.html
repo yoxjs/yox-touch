@@ -29,8 +29,8 @@
 
           on-swipe-left="test()"
           on-swipe-right="test()"
-          on-swipe-up="test()"
-          on-swipe-down="test()"
+
+          on-long-press="test()"
 {{!
           on-rotate-start="test()"
           on-rotate-move="test()"
@@ -53,6 +53,7 @@
           on-pinch-in="test()"
           on-pinch-out="test()"
 
+
 }}
         >
           {{#each gestures}}
@@ -69,7 +70,7 @@
         var instance = new Yox({
           el: '#app',
           data: {
-            gestures: []
+            gestures: [],
           },
           template: '#template',
           methods: {
