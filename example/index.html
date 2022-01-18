@@ -66,6 +66,7 @@
     <script src="./yox.js"></script>
     <script src="../dist/yox-touch.js"></script>
     <script>
+        YoxTouch.setHammer(window.Hammer)
         Yox.use(YoxTouch)
         var instance = new Yox({
           el: '#app',

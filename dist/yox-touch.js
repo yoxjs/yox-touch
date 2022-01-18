@@ -10,13 +10,7 @@
   (global = global || self, factory(global.YoxTouch = {}));
 }(this, (function (exports) { 'use strict';
 
-  var Hammer = typeof require === 'function'
-      ? require('hammerjs')
-      : window.Hammer;
-
-  if (!Hammer) {
-    throw new Error('[yox-touch] cannot locate Hammer.js.')
-  }
+  var Hammer;
 
   /**
    * 版本
@@ -75,6 +69,18 @@
     panRight: NULL,
   };
 
+  function setHammer(library) {
+    Hammer = library;
+    // 默认扩展一个长按手势
+    addGesture(
+      'longPress',
+      new Hammer.Press({
+        event: 'longpress',
+        time: 1000
+      })
+    );
+  }
+
   function addGesture(name, gesture) {
     var lowerName = Yox.string.lower(name);
     events[name] = {
@@ -98,15 +104,6 @@
       }
     };
   }
-
-  // 默认扩展一个长按手势
-  addGesture(
-    'longPress',
-    new Hammer.Press({
-      event: 'longpress',
-      time: 1000
-    })
-  );
 
   function install(Yox) {
 
@@ -148,6 +145,7 @@
 
   exports.addGesture = addGesture;
   exports.install = install;
+  exports.setHammer = setHammer;
   exports.version = version;
 
   Object.defineProperty(exports, '__esModule', { value: true });

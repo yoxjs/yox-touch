@@ -1,11 +1,5 @@
 
-const Hammer = typeof require === 'function'
-    ? require('hammerjs')
-    : window.Hammer
-
-if (!Hammer) {
-  throw new Error('[yox-touch] cannot locate Hammer.js.')
-}
+let Hammer
 
 /**
  * 版本
@@ -64,6 +58,18 @@ const events = {
   panRight: NULL,
 }
 
+export function setHammer(library) {
+  Hammer = library
+  // 默认扩展一个长按手势
+  addGesture(
+    'longPress',
+    new Hammer.Press({
+      event: 'longpress',
+      time: 1000
+    })
+  )
+}
+
 export function addGesture(name, gesture) {
   const lowerName = Yox.string.lower(name)
   events[name] = {
@@ -87,15 +93,6 @@ export function addGesture(name, gesture) {
     }
   }
 }
-
-// 默认扩展一个长按手势
-addGesture(
-  'longPress',
-  new Hammer.Press({
-    event: 'longpress',
-    time: 1000
-  })
-)
 
 export function install(Yox) {
 

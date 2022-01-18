@@ -25,7 +25,8 @@ CDN
 <script src="https://unpkg.com/yox@latest"></script>
 <script src="https://unpkg.com/yox-touch@latest"></script>
 <script>
-  // 必须手动注册，因为支持注册前进行事件扩展
+  // 必须手动注册
+  YoxTouch.setHammer(window.Hammer)
   Yox.use(YoxTouch)
 </script>
 ```
