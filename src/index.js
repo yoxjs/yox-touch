@@ -1,5 +1,5 @@
 
-let Hammer
+let Yox, Hammer
 
 /**
  * 版本
@@ -58,76 +58,70 @@ const events = {
   panRight: NULL,
 }
 
+export function addGesture(name, gesture) {
+  const lowerName = name.toLowerCase()
+  Yox.dom.addSpecialEvent(
+    name,
+    {
+      on(node, listener) {
+        if (gesture) {
+          let manager = node.$manager
+          if (!manager) {
+            manager = node.$manager = new Hammer.Manager(node)
+            manager.add(gesture)
+          }
+          manager.on(lowerName, listener)
+        }
+        else {
+          const hammer = node.$hammer || (node.$hammer = new Hammer(node))
+          hammer.on(lowerName, listener)
+        }
+      },
+      off(node, listener) {
+        if (gesture) {
+          const manager = node.$manager
+          manager.off(lowerName, listener)
+          if (isEmptyHandlers(manager.handlers)) {
+            manager.destroy()
+            node.$manager = NULL
+          }
+        }
+        else {
+          const hammer = node.$hammer
+          hammer.off(lowerName, listener)
+          if (isEmptyHandlers(hammer.handlers)) {
+            hammer.destroy()
+            node.$hammer = NULL
+          }
+        }
+      }
+    }
+  )
+}
+
+
 export function setHammer(library) {
   Hammer = library
+}
+
+export function install(library) {
+
+  Yox = library
+
+  Yox.object.each(
+    events,
+    function (_, name) {
+      addGesture(name)
+    }
+  )
+
   // 默认扩展一个长按手势
   addGesture(
     'longPress',
     new Hammer.Press({
       event: 'longpress',
-      time: 1000
+      time: 500
     })
-  )
-}
-
-export function addGesture(name, gesture) {
-  const lowerName = name.toLowerCase()
-  events[name] = {
-    on(node, listener) {
-      let manager = node.$manager
-
-      if (!manager) {
-        manager = node.$manager = new Hammer.Manager(node)
-        manager.add(gesture)
-      }
-
-      manager.on(lowerName, listener)
-    },
-    off(node, listener) {
-      const manager = node.$manager
-      manager.off(lowerName, listener)
-      if (isEmptyHandlers(manager.handlers)) {
-        manager.destroy()
-        node.$manager = NULL
-      }
-    }
-  }
-}
-
-export function install(Yox) {
-
-  Yox.object.each(
-    events,
-    function (customEvent, name) {
-      const lowerName = name.toLowerCase()
-      Yox.dom.addSpecialEvent(
-        name,
-        {
-          on(node, listener) {
-            if (customEvent && customEvent.on) {
-              customEvent.on(node, listener)
-            }
-            else {
-              const hammer = node.$hammer || (node.$hammer = new Hammer(node))
-              hammer.on(lowerName, listener)
-            }
-          },
-          off(node, listener) {
-            if (customEvent && customEvent.off) {
-              customEvent.off(node, listener)
-            }
-            else {
-              const hammer = node.$hammer
-              hammer.off(lowerName, listener)
-              if (isEmptyHandlers(hammer.handlers)) {
-                hammer.destroy()
-                node.$hammer = NULL
-              }
-            }
-          }
-        }
-      )
-    }
   )
 
 }

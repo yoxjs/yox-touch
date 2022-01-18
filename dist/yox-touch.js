@@ -1,5 +1,5 @@
 /**
- * yox-touch.js v0.11.2
+ * yox-touch.js v0.11.3
  * (c) 2017-2022 musicode
  * Released under the MIT License.
  */
@@ -10,14 +10,14 @@
   (global = global || self, factory(global.YoxTouch = {}));
 }(this, (function (exports) { 'use strict';
 
-  var Hammer;
+  var Yox, Hammer;
 
   /**
    * 版本
    *
    * @type {string}
    */
-  var version = "0.11.2";
+  var version = "0.11.3";
 
   var NULL = null;
 
@@ -69,76 +69,70 @@
     panRight: NULL,
   };
 
+  function addGesture(name, gesture) {
+    var lowerName = name.toLowerCase();
+    Yox.dom.addSpecialEvent(
+      name,
+      {
+        on: function on(node, listener) {
+          if (gesture) {
+            var manager = node.$manager;
+            if (!manager) {
+              manager = node.$manager = new Hammer.Manager(node);
+              manager.add(gesture);
+            }
+            manager.on(lowerName, listener);
+          }
+          else {
+            var hammer = node.$hammer || (node.$hammer = new Hammer(node));
+            hammer.on(lowerName, listener);
+          }
+        },
+        off: function off(node, listener) {
+          if (gesture) {
+            var manager = node.$manager;
+            manager.off(lowerName, listener);
+            if (isEmptyHandlers(manager.handlers)) {
+              manager.destroy();
+              node.$manager = NULL;
+            }
+          }
+          else {
+            var hammer = node.$hammer;
+            hammer.off(lowerName, listener);
+            if (isEmptyHandlers(hammer.handlers)) {
+              hammer.destroy();
+              node.$hammer = NULL;
+            }
+          }
+        }
+      }
+    );
+  }
+
+
   function setHammer(library) {
     Hammer = library;
+  }
+
+  function install(library) {
+
+    Yox = library;
+
+    Yox.object.each(
+      events,
+      function (_, name) {
+        addGesture(name);
+      }
+    );
+
     // 默认扩展一个长按手势
     addGesture(
       'longPress',
       new Hammer.Press({
         event: 'longpress',
-        time: 1000
+        time: 500
       })
-    );
-  }
-
-  function addGesture(name, gesture) {
-    var lowerName = name.toLowerCase();
-    events[name] = {
-      on: function on(node, listener) {
-        var manager = node.$manager;
-
-        if (!manager) {
-          manager = node.$manager = new Hammer.Manager(node);
-          manager.add(gesture);
-        }
-
-        manager.on(lowerName, listener);
-      },
-      off: function off(node, listener) {
-        var manager = node.$manager;
-        manager.off(lowerName, listener);
-        if (isEmptyHandlers(manager.handlers)) {
-          manager.destroy();
-          node.$manager = NULL;
-        }
-      }
-    };
-  }
-
-  function install(Yox) {
-
-    Yox.object.each(
-      events,
-      function (customEvent, name) {
-        var lowerName = name.toLowerCase();
-        Yox.dom.addSpecialEvent(
-          name,
-          {
-            on: function on(node, listener) {
-              if (customEvent && customEvent.on) {
-                customEvent.on(node, listener);
-              }
-              else {
-                var hammer = node.$hammer || (node.$hammer = new Hammer(node));
-                hammer.on(lowerName, listener);
-              }
-            },
-            off: function off(node, listener) {
-              if (customEvent && customEvent.off) {
-                customEvent.off(node, listener);
-              }
-              else {
-                var hammer = node.$hammer;
-                hammer.off(lowerName, listener);
-                if (isEmptyHandlers(hammer.handlers)) {
-                  hammer.destroy();
-                  node.$hammer = NULL;
-                }
-              }
-            }
-          }
-        );
-      }
     );
 
   }
