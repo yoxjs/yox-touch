@@ -71,7 +71,7 @@ export function setHammer(library) {
 }
 
 export function addGesture(name, gesture) {
-  const lowerName = Yox.string.lower(name)
+  const lowerName = name.toLowerCase()
   events[name] = {
     on(node, listener) {
       let manager = node.$manager
@@ -99,7 +99,7 @@ export function install(Yox) {
   Yox.object.each(
     events,
     function (customEvent, name) {
-      const lowerName = Yox.string.lower(name)
+      const lowerName = name.toLowerCase()
       Yox.dom.addSpecialEvent(
         name,
         {

@@ -1,5 +1,5 @@
 /**
- * yox-touch.js v0.11.0
+ * yox-touch.js v0.11.2
  * (c) 2017-2022 musicode
  * Released under the MIT License.
  */
@@ -17,7 +17,7 @@
    *
    * @type {string}
    */
-  var version = "0.11.0";
+  var version = "0.11.2";
 
   var NULL = null;
 
@@ -82,7 +82,7 @@
   }
 
   function addGesture(name, gesture) {
-    var lowerName = Yox.string.lower(name);
+    var lowerName = name.toLowerCase();
     events[name] = {
       on: function on(node, listener) {
         var manager = node.$manager;
@@ -110,7 +110,7 @@
     Yox.object.each(
       events,
       function (customEvent, name) {
-        var lowerName = Yox.string.lower(name);
+        var lowerName = name.toLowerCase();
         Yox.dom.addSpecialEvent(
           name,
           {
