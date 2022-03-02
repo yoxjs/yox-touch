@@ -68,7 +68,7 @@ export function addGesture(name, gesture) {
           let manager = node.$manager
           if (!manager) {
             manager = node.$manager = new Hammer.Manager(node)
-            manager.add(gesture)
+            manager.add(gesture())
           }
           manager.on(lowerName, listener)
         }
@@ -118,10 +118,12 @@ export function install(library) {
   // 默认扩展一个长按手势
   addGesture(
     'longPress',
-    new Hammer.Press({
-      event: 'longpress',
-      time: 500
-    })
+    function () {
+      return new Hammer.Press({
+        event: 'longpress',
+        time: 500
+      })
+    }
   )
 
 }

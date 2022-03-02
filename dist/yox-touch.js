@@ -1,5 +1,5 @@
 /**
- * yox-touch.js v0.11.3
+ * yox-touch.js v0.11.4
  * (c) 2017-2022 musicode
  * Released under the MIT License.
  */
@@ -17,7 +17,7 @@
    *
    * @type {string}
    */
-  var version = "0.11.3";
+  var version = "0.11.4";
 
   var NULL = null;
 
@@ -79,7 +79,7 @@
             var manager = node.$manager;
             if (!manager) {
               manager = node.$manager = new Hammer.Manager(node);
-              manager.add(gesture);
+              manager.add(gesture());
             }
             manager.on(lowerName, listener);
           }
@@ -129,10 +129,12 @@
     // 默认扩展一个长按手势
     addGesture(
       'longPress',
-      new Hammer.Press({
-        event: 'longpress',
-        time: 500
-      })
+      function () {
+        return new Hammer.Press({
+          event: 'longpress',
+          time: 500
+        })
+      }
     );
 
   }
